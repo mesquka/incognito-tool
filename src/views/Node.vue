@@ -1,15 +1,15 @@
 <template>
   <div class="container-app">
-    home
+    node
   </div>
 </template>
 
 <script>
 export default {
-  name: 'home',
+  name: 'node',
   data() {
     return {
-      nodes: [],
+      earnings: [],
     };
   },
 };
