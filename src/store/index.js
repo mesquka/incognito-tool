@@ -12,6 +12,7 @@ export default new Vuex.Store({
     nodeIP: '',
     nodePort: 9334,
     nodeKey: '',
+    listRewardAmountCache: {},
   },
   mutations: {
     setAddress(state, address) {
@@ -28,6 +29,9 @@ export default new Vuex.Store({
     },
     setNodeKey(state, key) {
       state.nodeKey = key;
+    },
+    setListRewardAmountCache(state, value) {
+      state.listRewardAmountCache = value;
     },
   },
   actions: {

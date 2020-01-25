@@ -2,27 +2,43 @@
   <div class="container-app">
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title" v-if="this.loading">
-          LOADING
+        <p class="card-header-title" v-if="!!nodes[pubKey]">
+          You
         </p>
-        <p class="card-header-title" v-if="this.selfIsPresent">
-          {{pubKey}}
-        </p>
-        <p class="card-header-title" v-if="!this.selfIsPresent && !this.loading">
+        <p class="card-header-title" v-if="!nodes[pubKey]">
           <router-link to="/settings">Set address in settings</router-link>
         </p>
       </header>
-      <div class="card-content" v-if="this.selfIsPresent">
+      <div class="card-content" v-if="!!nodes[pubKey]">
         <table class="table is-fullwidth">
-          <tr>
-            <th>BeaconHeight</th>
-            <td>{{selfData}}</td>
+          <tr v-for="(value, index) in nodes[pubKey]" v-bind:key="index">
+            <th>{{tokenIDToName(index)}}</th>
+            <td>{{value/10**9}}</td>
           </tr>
         </table>
       </div>
     </div>
 
-    <div class="spacer"></div>
+    <hr>
+
+    <div v-for="(tokens, tindex) in nodes" v-bind:key="tindex">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            {{tindex}}
+          </p>
+        </header>
+        <div class="card-content">
+          <table class="table is-fullwidth">
+            <tr v-for="(value, index) in tokens" v-bind:key="index">
+              <th>{{tokenIDToName(index)}}</th>
+              <td>{{value/10**9}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="spacer"></div>
+    </div>
   </div>
 </template>
 
@@ -35,17 +51,15 @@ export default {
   data() {
     api.listRewardAmount().then((result) => {
       this.nodes = result.data.Result;
-      this.loading = false;
-      this.selfIsPresent = !!this.nodes[this.pubKey];
-      this.selfData = this.selfIsPresent ? this.nodes[this.pubKey] : {};
+      store.commit('setListRewardAmountCache', result.data.Result);
     });
     return {
-      loading: true,
-      selfIsPresent: false,
       pubKey: store.state.pubKey,
-      selfData: {},
-      nodes: {},
+      nodes: store.state.listRewardAmountCache,
     };
+  },
+  methods: {
+    tokenIDToName: api.tokenIDToName,
   },
 };
 </script>
