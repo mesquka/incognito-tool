@@ -10,6 +10,7 @@ export default new Vuex.Store({
     address: '',
     pubKey: '',
     nodeIP: '',
+    nodePort: 9334,
     nodeKey: '',
   },
   mutations: {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     setNodeIP(state, ip) {
       state.nodeIP = ip;
+    },
+    setNodePort(state, port) {
+      state.nodePort = port;
     },
     setNodeKey(state, key) {
       state.nodeKey = key;
@@ -36,10 +40,11 @@ export default new Vuex.Store({
         }).catch(reject);
       });
     },
-    changeNodeIP(state, nodeIP) {
+    changeNodeIP(state, node) {
       return new Promise((resolve, reject) => {
-        api.getPublicKeyMining(nodeIP).then((result) => {
-          state.commit('setNodeIP', nodeIP);
+        api.getPublicKeyMining(`http://${node.nodeIP}:${node.nodePort}`).then((result) => {
+          state.commit('setNodeIP', node.nodeIP);
+          state.commit('setNodePort', node.nodePort);
           state.commit('setNodeKey', result.data.Result[0]);
           resolve();
         }).catch(reject);

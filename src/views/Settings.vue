@@ -1,8 +1,12 @@
 <template>
   <div class="container-app">
     <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          Incognito Address
+        </p>
+      </header>
       <div class="card-content">
-        <h1 class="is-size-2">Address</h1>
         <div class="field">
           <label class="label">Address</label>
           <div class="control">
@@ -29,12 +33,22 @@
     <div class="spacer"></div>
 
     <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          Node IP
+        </p>
+      </header>
       <div class="card-content">
-        <h2 class="is-size-2">Node IP</h2>
         <div class="field">
           <label class="label">IP Address</label>
           <div class="control">
             <input class="input" type="text" v-model="nodeIP">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Port</label>
+          <div class="control">
+            <input class="input" type="text" v-model="nodePort">
           </div>
         </div>
         <div class="field">
@@ -66,6 +80,7 @@ export default {
       address: store.state.address,
       pubKey: store.state.pubKey,
       nodeIP: store.state.nodeIP,
+      nodePort: store.state.nodePort,
       nodeKey: store.state.nodeKey,
     };
   },
@@ -84,17 +99,23 @@ export default {
       this.pubKey = store.state.pubKey;
     },
     submitNode() {
-      store.dispatch('changeNodeIP', this.nodeIP).then(() => {
+      store.dispatch('changeNodeIP', {
+        nodeIP: this.nodeIP,
+        nodePort: parseInt(this.nodePort, 10),
+      }).then(() => {
         this.nodeIP = store.state.nodeIP;
+        this.nodePort = store.state.nodePort;
         this.nodeKey = store.state.nodeKey;
       }).catch(() => {
         this.nodeIP = store.state.nodeIP;
+        this.nodePort = store.state.nodePort;
         this.nodeKey = store.state.nodeKey;
       });
     },
     cancelNode() {
       // const nodeEndpoint = node.includes(':') ? node : `${node}:9334`;
       this.nodeIP = store.state.nodeIP;
+      this.nodePort = store.state.nodePort;
       this.nodeKey = store.state.nodeKey;
     },
   },

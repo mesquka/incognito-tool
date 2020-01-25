@@ -69,9 +69,26 @@ function getMinerRewardFromMiningKey(key) {
   });
 }
 
+function getMiningInfo(node) {
+  return new Promise((resolve, reject) => {
+    axios.post(node, {
+      jsonrpc: '2.0',
+      method: 'getmininginfo',
+      id: 1,
+    }).then((result) => {
+      if (result.data.Error === null) {
+        resolve(result);
+      } else {
+        reject();
+      }
+    }).catch(reject);
+  });
+}
+
 module.exports = {
   getPublicKeyFromPaymentAddress,
   listRewardAmount,
   getPublicKeyMining,
   getMinerRewardFromMiningKey,
+  getMiningInfo,
 };
