@@ -6,9 +6,13 @@
           {{nodeIP}}
         </p>
         <p class="card-header-title" v-if="!this.status.Chain">
-          <router-link to="/settings">Set node details in settings</router-link>
+          <router-link to="/settings">Set node details in settings</router-link><br>
         </p>
       </header>
+      <div class="card-content" v-if="!this.status.Chain">
+        If you're having issues you may need to allow unsafe scripts in your browser.
+        In chrome this is usually found at the right of the address bar.
+      </div>
       <div class="card-content" v-if="this.status.Chain">
         <table class="table is-fullwidth">
           <tr>
