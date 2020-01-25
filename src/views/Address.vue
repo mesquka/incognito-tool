@@ -3,7 +3,7 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title" v-if="!!nodes[pubKey]">
-          You
+          {{address}}
         </p>
         <p class="card-header-title" v-if="!nodes[pubKey]">
           <router-link to="/settings">Set address in settings</router-link>
@@ -17,27 +17,6 @@
           </tr>
         </table>
       </div>
-    </div>
-
-    <hr>
-
-    <div v-for="(tokens, tindex) in nodes" v-bind:key="tindex">
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">
-            {{tindex}}
-          </p>
-        </header>
-        <div class="card-content">
-          <table class="table is-fullwidth">
-            <tr v-for="(value, index) in tokens" v-bind:key="index">
-              <th>{{tokenIDToName(index)}}</th>
-              <td>{{value/10**9}}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <div class="spacer"></div>
     </div>
   </div>
 </template>
@@ -54,6 +33,7 @@ export default {
       store.commit('setListRewardAmountCache', result.data.Result);
     });
     return {
+      address: store.state.address,
       pubKey: store.state.pubKey,
       nodes: store.state.listRewardAmountCache,
     };

@@ -23,7 +23,7 @@
       <div class="navbar-start"></div>
       <div class="navbar-end">
         <router-link to="/" class="navbar-item" v-on:click.native="showNav = false">
-          Home
+          Address
         </router-link>
         <router-link to="/node" class="navbar-item" v-on:click.native="showNav = false">
           Node
