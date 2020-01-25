@@ -54,6 +54,8 @@
         </table>
       </div>
     </div>
+
+    <div class="spacer"></div>
   </div>
 </template>
 

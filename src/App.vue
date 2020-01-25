@@ -32,4 +32,8 @@ export default {
 .container-app {
   padding: 0 5vw 0 5vw;
 }
+
+.spacer {
+  height: 30px;
+}
 </style>

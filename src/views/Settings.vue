@@ -65,8 +65,14 @@
             <button class="button is-link is-light" v-on:click="cancelNode">Cancel</button>
           </div>
         </div>
+        <small>
+          If you're having issues you may need to allow unsafe scripts in your browser.
+          In chrome this is usually found at the right of the address bar.
+        </small>
       </div>
     </div>
+
+    <div class="spacer"></div>
   </div>
 </template>
 
@@ -121,9 +127,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.spacer {
-  height: 30px;
-}
-</style>
