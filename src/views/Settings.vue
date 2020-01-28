@@ -3,29 +3,43 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          Incognito Address
+          Tip
         </p>
       </header>
       <div class="card-content">
-        <div class="field">
-          <label class="label">Address</label>
-          <div class="control">
-            <input class="input" type="text" v-model="address">
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">Public Key</label>
-          <div class="control">
-            <input class="input" type="text" v-model="pubKey" disabled>
-          </div>
-        </div>
-        <div class="field is-grouped">
-          <div class="control">
-            <button class="button is-link" v-on:click="submitAddress">Submit</button>
-          </div>
-          <div class="control">
-            <button class="button is-link is-light" v-on:click="cancelAddress">Cancel</button>
-          </div>
+        If you're having issues you may need to allow unsafe scripts in your browser,
+        in chrome this is usually found at the right of the address bar.
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          Addresses
+        </p>
+        <p class="card-header-icon" v-on:click="addAddress">
+          <span class="icon">
+            <i class="mdi mdi-plus"></i>
+          </span>
+        </p>
+      </header>
+      <div class="card-content">
+        <div class="field is-grouped" v-for="(address, index) in addresses" v-bind:key="index">
+          <p class="control is-expanded">
+            <input
+              class="input"
+              type="text"
+              placeholder="Address"
+              v-model="address.address"
+              v-on:input="save">
+          </p>
+          <p class="control">
+            <button class="button is-danger" v-on:click="deleteAddress(index)">
+              <i class="mdi mdi-delete"></i>
+            </button>
+          </p>
         </div>
       </div>
     </div>
@@ -35,40 +49,54 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          Node IP
+          Nodes
+        </p>
+        <p class="card-header-icon" v-on:click="addNode">
+          <span class="icon">
+            <i class="mdi mdi-plus"></i>
+          </span>
         </p>
       </header>
       <div class="card-content">
-        <div class="field">
-          <label class="label">IP Address</label>
-          <div class="control">
-            <input class="input" type="text" v-model="nodeIP">
-          </div>
+        <div class="field is-grouped" v-for="(node, index) in nodes" v-bind:key="index">
+          <p class="control is-expanded">
+            <input
+              class="input"
+              type="text"
+              placeholder="IP"
+              v-model="node.ip"
+              v-on:input="save">
+          </p>
+          <p class="control">
+            <input
+              class="input"
+              type="number"
+              placeholder="Port"
+              v-model="node.port"
+              v-on:input="save">
+          </p>
+          <p class="control">
+            <button class="button is-danger" v-on:click="deleteNode(index)">
+              <i class="mdi mdi-delete"></i>
+            </button>
+          </p>
         </div>
-        <div class="field">
-          <label class="label">Port</label>
-          <div class="control">
-            <input class="input" type="text" v-model="nodePort">
-          </div>
-        </div>
-        <div class="field">
-          <label class="label">BLS Key</label>
-          <div class="control">
-            <input class="input" type="text" v-model="nodeKey" disabled>
-          </div>
-        </div>
-        <div class="field is-grouped">
-          <div class="control">
-            <button class="button is-link" v-on:click="submitNode">Submit</button>
-          </div>
-          <div class="control">
-            <button class="button is-link is-light" v-on:click="cancelNode">Cancel</button>
-          </div>
-        </div>
-        <small>
-          If you're having issues you may need to allow unsafe scripts in your browser.
-          In chrome this is usually found at the right of the address bar.
-        </small>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          Reset Settings
+        </p>
+      </header>
+      <div class="card-content">
+        <button class="button is-danger is-fullwidth" v-on:click="resetData">
+          Reset App Settings
+        </button>
+        <small>Use this if you're experiencing issues with the dashboard</small>
       </div>
     </div>
 
@@ -83,46 +111,39 @@ export default {
   name: 'settings',
   data() {
     return {
-      address: store.state.address,
-      pubKey: store.state.pubKey,
-      nodeIP: store.state.nodeIP,
-      nodePort: store.state.nodePort,
-      nodeKey: store.state.nodeKey,
+      addresses: store.state.addresses,
+      nodes: store.state.nodes,
     };
   },
   methods: {
-    submitAddress() {
-      store.dispatch('changeAddress', this.address).then(() => {
-        this.address = store.state.address;
-        this.pubKey = store.state.pubKey;
-      }).catch(() => {
-        this.address = store.state.address;
-        this.pubKey = store.state.pubKey;
+    deleteAddress(index) {
+      this.addresses.splice(index, 1);
+      this.save();
+    },
+    deleteNode(index) {
+      this.nodes.splice(index, 1);
+      this.save();
+    },
+    addNode() {
+      this.nodes.push({
+        ip: '',
+        port: '9334',
+        status: {},
       });
     },
-    cancelAddress() {
-      this.address = store.state.address;
-      this.pubKey = store.state.pubKey;
-    },
-    submitNode() {
-      store.dispatch('changeNodeIP', {
-        nodeIP: this.nodeIP,
-        nodePort: parseInt(this.nodePort, 10),
-      }).then(() => {
-        this.nodeIP = store.state.nodeIP;
-        this.nodePort = store.state.nodePort;
-        this.nodeKey = store.state.nodeKey;
-      }).catch(() => {
-        this.nodeIP = store.state.nodeIP;
-        this.nodePort = store.state.nodePort;
-        this.nodeKey = store.state.nodeKey;
+    addAddress() {
+      this.addresses.push({
+        address: '',
+        rewards: [],
       });
     },
-    cancelNode() {
-      // const nodeEndpoint = node.includes(':') ? node : `${node}:9334`;
-      this.nodeIP = store.state.nodeIP;
-      this.nodePort = store.state.nodePort;
-      this.nodeKey = store.state.nodeKey;
+    save() {
+      store.commit('setAddresses', this.addresses);
+      store.commit('setNodes', this.nodes);
+    },
+    resetData() {
+      window.localStorage.removeItem('vuex');
+      window.location.reload();
     },
   },
 };

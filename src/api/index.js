@@ -1,5 +1,5 @@
-const axios = require('axios');
-const uuid = require('uuid/v4');
+import axios from 'axios';
+import uuid from 'uuid/v4';
 
 const ENDPOINT = 'https://mainnet.incognito.org/fullnode';
 
@@ -15,7 +15,7 @@ const TOKEN_MAP = {
 
 function tokenIDToName(id) {
   if (TOKEN_MAP[id]) return TOKEN_MAP[id];
-  return `Unknown Token: ${id.slice(0, 8)}...`;
+  return false;
 }
 
 function getPublicKeyFromPaymentAddress(address) {
@@ -27,7 +27,7 @@ function getPublicKeyFromPaymentAddress(address) {
       id: uuid(),
     }).then((result) => {
       if (result.data.Error === null) {
-        resolve(result);
+        resolve(result.data.Result);
       } else {
         reject();
       }
@@ -43,7 +43,7 @@ function listRewardAmount() {
       id: uuid(),
     }).then((result) => {
       if (result.data.Error === null) {
-        resolve(result);
+        resolve(result.data.Result);
       } else {
         reject();
       }
@@ -59,7 +59,7 @@ function getPublicKeyMining(node) {
       id: uuid(),
     }).then((result) => {
       if (result.data.Error === null && result.data.Result !== null) {
-        resolve(result);
+        resolve(result.data.Result);
       } else {
         reject();
       }
@@ -76,7 +76,7 @@ function getMinerRewardFromMiningKey(key) {
       id: 1,
     }).then((result) => {
       if (result.data.Error === null) {
-        resolve(result);
+        resolve(result.data.Result);
       } else {
         reject();
       }
@@ -92,7 +92,7 @@ function getMiningInfo(node) {
       id: 1,
     }).then((result) => {
       if (result.data.Error === null) {
-        resolve(result);
+        resolve(result.data.Result);
       } else {
         reject();
       }
@@ -100,7 +100,7 @@ function getMiningInfo(node) {
   });
 }
 
-module.exports = {
+export default {
   tokenIDToName,
   getPublicKeyFromPaymentAddress,
   listRewardAmount,

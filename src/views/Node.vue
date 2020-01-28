@@ -2,64 +2,72 @@
   <div class="container-app">
     <div class="card">
       <header class="card-header">
-        <p class="card-header-title" v-if="this.status.Chain">
-          {{nodeIP}}
-        </p>
-        <p class="card-header-title" v-if="!this.status.Chain">
-          <router-link to="/settings">Set node details in settings</router-link><br>
+        <p class="card-header-title">
+          Tip
         </p>
       </header>
-      <div class="card-content" v-if="!this.status.Chain">
-        If you're having issues you may need to allow unsafe scripts in your browser.
-        In chrome this is usually found at the right of the address bar.
-      </div>
-      <div class="card-content" v-if="this.status.Chain">
-        <table class="table is-fullwidth">
-          <tr>
-            <th>BeaconHeight</th>
-            <td>{{status.BeaconHeight}}</td>
-          </tr>
-          <tr>
-            <th>Chain</th>
-            <td>{{status.Chain}}</td>
-          </tr>
-          <tr>
-            <th>CurrentShardBlockTx</th>
-            <td>{{status.CurrentShardBlockTx}}</td>
-          </tr>
-          <tr>
-            <th>Mining</th>
-            <td>{{status.IsEnableMining}}</td>
-          </tr>
-          <tr>
-            <th>Layer</th>
-            <td>{{status.Layer}}</td>
-          </tr>
-          <tr>
-            <th>MiningPublickey</th>
-            <td>{{status.MiningPublickey}}</td>
-          </tr>
-          <tr>
-            <th>PoolSize</th>
-            <td>{{status.PoolSize}}</td>
-          </tr>
-          <tr>
-            <th>Role</th>
-            <td>{{status.Role}}</td>
-          </tr>
-          <tr>
-            <th>ShardHeight</th>
-            <td>{{status.ShardHeight}}</td>
-          </tr>
-          <tr>
-            <th>ShardID</th>
-            <td>{{status.ShardID}}</td>
-          </tr>
-        </table>
+      <div class="card-content">
+        If you're having issues you may need to allow unsafe scripts in your browser,
+        in chrome this is usually found at the right of the address bar.
       </div>
     </div>
 
     <div class="spacer"></div>
+
+    <div v-for="(node, index) in nodes" v-bind:key="index">
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            {{node.ip}}
+          </p>
+        </header>
+        <div class="card-content">
+          <table class="table is-fullwidth">
+            <tr>
+              <th>BeaconHeight</th>
+              <td>{{node.status.BeaconHeight}}</td>
+            </tr>
+            <tr>
+              <th>Chain</th>
+              <td>{{node.status.Chain}}</td>
+            </tr>
+            <tr>
+              <th>CurrentShardBlockTx</th>
+              <td>{{node.status.CurrentShardBlockTx}}</td>
+            </tr>
+            <tr>
+              <th>Mining</th>
+              <td>{{node.status.IsEnableMining}}</td>
+            </tr>
+            <tr>
+              <th>Layer</th>
+              <td>{{node.status.Layer}}</td>
+            </tr>
+            <tr>
+              <th>MiningPublickey</th>
+              <td>{{node.status.MiningPublickey}}</td>
+            </tr>
+            <tr>
+              <th>PoolSize</th>
+              <td>{{node.status.PoolSize}}</td>
+            </tr>
+            <tr>
+              <th>Role</th>
+              <td>{{node.status.Role}}</td>
+            </tr>
+            <tr>
+              <th>ShardHeight</th>
+              <td>{{node.status.ShardHeight}}</td>
+            </tr>
+            <tr>
+              <th>ShardID</th>
+              <td>{{node.status.ShardID}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="spacer"></div>
+    </div>
   </div>
 </template>
 
@@ -70,15 +78,20 @@ import store from '@/store';
 export default {
   name: 'node',
   data() {
-    api.getMiningInfo(`http://${store.state.nodeIP}:${store.state.nodePort}`).then((result) => {
-      this.status = result.data.Result;
+    store.state.nodes.forEach((node, index) => {
+      api.getMiningInfo(`http://${node.ip}:${node.port}`).then((result) => {
+        this.nodes[index].status = result;
+        this.save();
+      });
     });
     return {
-      nodeIP: store.state.nodeIP,
-      nodePort: store.state.nodePort,
-      nodeKey: store.state.nodeKey,
-      status: {},
+      nodes: store.state.nodes,
     };
+  },
+  methods: {
+    save() {
+      store.commit('setNodes', this.nodes);
+    },
   },
 };
 </script>
