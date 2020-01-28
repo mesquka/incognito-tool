@@ -22,21 +22,17 @@
           </p>
         </header>
         <div class="card-content">
-          <table class="table is-fullwidth">
+          <table class="table is-bordered is-fullwidth">
             <tr>
-              <th>BeaconHeight</th>
+              <th>Beacon Chain Height</th>
               <td>{{node.status.BeaconHeight}}</td>
             </tr>
             <tr>
-              <th>Chain</th>
+              <th>Network</th>
               <td>{{node.status.Chain}}</td>
             </tr>
             <tr>
-              <th>CurrentShardBlockTx</th>
-              <td>{{node.status.CurrentShardBlockTx}}</td>
-            </tr>
-            <tr>
-              <th>Mining</th>
+              <th>Staking</th>
               <td>{{node.status.IsEnableMining}}</td>
             </tr>
             <tr>
@@ -44,20 +40,8 @@
               <td>{{node.status.Layer}}</td>
             </tr>
             <tr>
-              <th>MiningPublickey</th>
-              <td>{{node.status.MiningPublickey}}</td>
-            </tr>
-            <tr>
-              <th>PoolSize</th>
-              <td>{{node.status.PoolSize}}</td>
-            </tr>
-            <tr>
               <th>Role</th>
               <td>{{node.status.Role}}</td>
-            </tr>
-            <tr>
-              <th>ShardHeight</th>
-              <td>{{node.status.ShardHeight}}</td>
             </tr>
             <tr>
               <th>ShardID</th>
@@ -95,3 +79,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.card-header {
+  overflow: scroll;
+}
+</style>

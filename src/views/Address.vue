@@ -26,7 +26,7 @@
           </p>
         </header>
         <div class="card-content">
-          <table class="table is-fullwidth">
+          <table class="table is-bordered is-fullwidth">
             <tr v-for="(reward, index) in address.rewards" v-bind:key="index">
               <th>{{reward.name}}</th>
               <td>{{reward.amount/10**9}}</td>
@@ -99,9 +99,14 @@ export default {
   z-index: 100;
   background: rgba(255, 255, 255, 0.5);
 }
+
 .loader {
   height: 80px;
   width: 80px;
   opacity: 1;
+}
+
+.card-header {
+  overflow: scroll;
 }
 </style>
