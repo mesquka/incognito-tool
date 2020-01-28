@@ -59,7 +59,6 @@ export default {
                 name: api.tokenIDToName(token),
                 amount: parseInt(rewards[publicKey.PublicKeyInBase58Check][token], 10),
               });
-              this.save();
             }
           });
           if (this.addresses[index].rewards.length === 0) {
@@ -68,6 +67,7 @@ export default {
               amount: 0,
             });
           }
+          this.save();
         });
         this.isLoading = false;
       });
