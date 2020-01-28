@@ -96,14 +96,13 @@ export default {
   justify-content: center;
   align-items: center;
   border-radius: 6px;
-  z-index: 100;
-  background: rgba(255, 255, 255, 0.5);
+  z-index: -1;
 }
 
 .loader {
   height: 80px;
   width: 80px;
-  opacity: 1;
+  z-index: 100;
 }
 
 .card-header {
