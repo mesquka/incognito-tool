@@ -18,7 +18,7 @@
       <div class="card">
         <header class="card-header">
           <p class="card-header-title">
-            {{node.ip}}
+            {{node.ip}}:{{node.port}}
           </p>
         </header>
         <div class="card-content">
