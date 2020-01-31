@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Address from '@/views/Address.vue';
 import Node from '@/views/Node.vue';
 import Settings from '@/views/Settings.vue';
+import About from '@/views/About.vue';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: '/settings',
     name: 'settings',
     component: Settings,
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: About,
   },
 ];
 

@@ -31,6 +31,9 @@
         <router-link to="/settings" class="navbar-item" v-on:click.native="showNav = false">
           Settings
         </router-link>
+        <router-link to="/about" class="navbar-item" v-on:click.native="showNav = false">
+          About
+        </router-link>
       </div>
     </div>
   </nav>

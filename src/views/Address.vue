@@ -44,7 +44,7 @@ import api from '@/api';
 import store from '@/store';
 
 export default {
-  name: 'home',
+  name: 'address',
   data() {
     api.listRewardAmount().then((rewards) => {
       this.addresses.forEach((address, index) => {
