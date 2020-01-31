@@ -58,8 +58,8 @@
               v-for="(reward, index) in node.rewards"
               v-bind:key="index"
             >
-              <th>{{reward.name}}</th>
-              <td>{{reward.amount/(10**reward.decimals)}}</td>
+              <th>{{reward.Name}}</th>
+              <td>{{reward.amount/(10**reward.PDecimals)}}</td>
             </tr>
           </table>
         </div>
@@ -87,25 +87,14 @@ export default {
         [this.nodes[index].miningKey] = miningKey;
         api.getMinerRewardFromMiningKey(miningKey[0]).then((rewards) => {
           this.nodes[index].rewards = [];
-          Object.keys(rewards).forEach((token) => {
-            if (
-              rewards[token] !== 0
-              && api.tokenIDToName(token)
-            ) {
-              this.nodes[index].rewards.push({
-                name: api.tokenIDToName(token),
-                decimals: api.tokenNameToDecimals(api.tokenIDToName(token)),
-                amount: parseInt(rewards[token], 10),
-              });
+          Object.keys(rewards).forEach((id) => {
+            if (api.tokenIDToToken(id)) {
+              // Object.assign to remove reactivity
+              const token = Object.assign({}, api.tokenIDToToken(id));
+              token.amount = rewards[id];
+              this.nodes[index].rewards.push(token);
             }
           });
-          if (this.nodes[index].rewards.length === 0) {
-            this.nodes[index].rewards.push({
-              name: 'PRV',
-              decimals: api.tokenNameToDecimals('PRV'),
-              amount: 0,
-            });
-          }
           this.save();
         });
       });

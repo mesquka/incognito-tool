@@ -1,42 +1,34 @@
 import axios from 'axios';
 import uuid from 'uuid/v4';
+import store from '@/store';
 
-const ENDPOINT = 'https://mainnet.incognito.org/fullnode';
+const INCOGNITO_NODE = 'https://mainnet.incognito.org/fullnode';
+const INCOGNITO_API = 'https://api.incognito.org';
+// const IMAGES_ROOT = 'https://storage.googleapis.com/incognito/wallet/tokens/icons';
 
-const TOKEN_ID_NAME_MAP = {
-  '0000000000000000000000000000000000000000000000000000000000000004': 'PRV',
-  ffd8d42dc40a8d166ea4848baf8b5f6e912ad79875f4373070b59392b1756c8f: 'pETH',
-  b832e5d3b1f01a4f0623f7fe91d6673461e1f5d37d91fe78c5c2e6183ff39696: 'pBTC',
-  b2655152784e8639fa19521a7035f331eea1f1e911b2f3200a507ebb4554387b: 'pBNB',
-  b20810f4d2a1dde8046028819d9fa12549e04ce14fb299594da8cfca9be5d856: 'pUSD',
-  a0a22d131bbfdc892938542f0dbe1a7f2f48e16bc46bf1c5404319335dc1f0df: 'pTomo',
-  '716fd1009e2a1669caacc36891e707bfdf02590f96ebd897548e8963c95ebac0': 'pUSDT',
-};
+axios.get(`${INCOGNITO_API}/ptoken/list`).then((res) => {
+  const tokenNameIDMap = {
+    PRV: {
+      Name: 'PRV',
+      PDecimals: 9,
+    },
+  };
+  res.data.Result.forEach((token) => {
+    if (token.Verified) tokenNameIDMap[token.TokenID] = token;
+    if (token.Verified) tokenNameIDMap[token.PSymbol] = token;
+  });
+  store.commit('setTokenNameIDMap', tokenNameIDMap);
+});
 
-const TOKEN_NAME_DECIMALS_MAP = {
-  PRV: 9,
-  pETH: 6,
-  pBTC: 6,
-  pBNB: 6,
-  pUSD: 6,
-  pTomo: 6,
-  pUSDT: 6,
-};
-
-function tokenIDToName(id) {
-  if (TOKEN_ID_NAME_MAP[id]) return TOKEN_ID_NAME_MAP[id];
+function tokenIDToToken(id) {
+  if (store.state.tokenNameIDMap[id]) return store.state.tokenNameIDMap[id];
   if (id.length !== 64) return id;
   return false;
 }
 
-function tokenNameToDecimals(name) {
-  if (TOKEN_NAME_DECIMALS_MAP[name]) return TOKEN_NAME_DECIMALS_MAP[name];
-  return 0;
-}
-
 function getPublicKeyFromPaymentAddress(address) {
   return new Promise((resolve, reject) => {
-    axios.post(ENDPOINT, {
+    axios.post(INCOGNITO_NODE, {
       jsonrpc: '2.0',
       method: 'getpublickeyfrompaymentaddress',
       params: [address],
@@ -53,7 +45,7 @@ function getPublicKeyFromPaymentAddress(address) {
 
 function listRewardAmount() {
   return new Promise((resolve, reject) => {
-    axios.post(ENDPOINT, {
+    axios.post(INCOGNITO_NODE, {
       jsonrpc: '2.0',
       method: 'listrewardamount',
       id: uuid(),
@@ -85,7 +77,7 @@ function getPublicKeyMining(node) {
 
 function getMinerRewardFromMiningKey(key) {
   return new Promise((resolve, reject) => {
-    axios.post(ENDPOINT, {
+    axios.post(INCOGNITO_NODE, {
       jsonrpc: '2.0',
       method: 'getminerrewardfromminingkey',
       params: [key],
@@ -117,8 +109,7 @@ function getMiningInfo(node) {
 }
 
 export default {
-  tokenIDToName,
-  tokenNameToDecimals,
+  tokenIDToToken,
   getPublicKeyFromPaymentAddress,
   listRewardAmount,
   getPublicKeyMining,

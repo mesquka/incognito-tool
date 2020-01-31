@@ -28,8 +28,8 @@
         <div class="card-content">
           <table class="table is-bordered is-fullwidth">
             <tr v-for="(reward, index) in address.rewards" v-bind:key="index">
-              <th>{{reward.name}}</th>
-              <td>{{reward.amount/10**9}}</td>
+              <th>{{reward.Name}}</th>
+              <td>{{reward.amount/(10**reward.PDecimals)}}</td>
             </tr>
           </table>
         </div>
@@ -50,25 +50,14 @@ export default {
       this.addresses.forEach((address, index) => {
         api.getPublicKeyFromPaymentAddress(address.address).then((publicKey) => {
           this.addresses[index].rewards = [];
-          Object.keys(rewards[publicKey.PublicKeyInBase58Check]).forEach((token) => {
-            if (
-              rewards[publicKey.PublicKeyInBase58Check][token] !== 0
-              && api.tokenIDToName(token)
-            ) {
-              this.addresses[index].rewards.push({
-                name: api.tokenIDToName(token),
-                decimals: api.tokenNameToDecimals(api.tokenIDToName(token)),
-                amount: parseInt(rewards[publicKey.PublicKeyInBase58Check][token], 10),
-              });
+          Object.keys(rewards[publicKey.PublicKeyInBase58Check]).forEach((id) => {
+            if (api.tokenIDToToken(id)) {
+              // Object.assign to remove reactivity
+              const token = Object.assign({}, api.tokenIDToToken(id));
+              token.amount = rewards[publicKey.PublicKeyInBase58Check][id];
+              this.addresses[index].rewards.push(token);
             }
           });
-          if (this.addresses[index].rewards.length === 0) {
-            this.addresses[index].rewards.push({
-              name: 'PRV',
-              decimals: api.tokenNameToDecimals('PRV'),
-              amount: 0,
-            });
-          }
           this.save();
         });
         this.isLoading = false;

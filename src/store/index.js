@@ -8,6 +8,7 @@ const store = new Vuex.Store({
   state: {
     addresses: [],
     nodes: [],
+    tokenNameIDMap: {},
   },
   mutations: {
     setAddresses(state, addresses) {
@@ -15,6 +16,9 @@ const store = new Vuex.Store({
     },
     setNodes(state, nodes) {
       state.nodes = nodes;
+    },
+    setTokenNameIDMap(state, tokenNameIDMap) {
+      state.tokenNameIDMap = tokenNameIDMap;
     },
   },
   plugins: [new VuexPersistence({
