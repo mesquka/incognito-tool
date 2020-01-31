@@ -129,6 +129,8 @@ export default {
         ip: '',
         port: '9334',
         status: {},
+        miningKey: '',
+        rewards: {},
       });
     },
     addAddress() {

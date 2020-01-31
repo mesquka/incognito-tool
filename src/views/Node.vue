@@ -47,6 +47,20 @@
               <th>ShardID</th>
               <td>{{node.status.ShardID}}</td>
             </tr>
+            <tr>
+              <th>Mining Key</th>
+              <td>{{`${node.miningKey.slice(0, 64)}...`}}</td>
+            </tr>
+          </table>
+          <strong>Rewards:</strong>
+          <table class="table is-bordered is-fullwidth">
+            <tr
+              v-for="(reward, index) in node.rewards"
+              v-bind:key="index"
+            >
+              <th>{{reward.name}}</th>
+              <td>{{reward.amount/(10**reward.decimals)}}</td>
+            </tr>
           </table>
         </div>
       </div>
@@ -66,6 +80,34 @@ export default {
       api.getMiningInfo(`http://${node.ip}:${node.port}`).then((result) => {
         this.nodes[index].status = result;
         this.save();
+      });
+    });
+    store.state.nodes.forEach((node, index) => {
+      api.getPublicKeyMining(`http://${node.ip}:${node.port}`).then((miningKey) => {
+        [this.nodes[index].miningKey] = miningKey;
+        api.getMinerRewardFromMiningKey(miningKey[0]).then((rewards) => {
+          this.nodes[index].rewards = [];
+          Object.keys(rewards).forEach((token) => {
+            if (
+              rewards[token] !== 0
+              && api.tokenIDToName(token)
+            ) {
+              this.nodes[index].rewards.push({
+                name: api.tokenIDToName(token),
+                decimals: api.tokenNameToDecimals(api.tokenIDToName(token)),
+                amount: parseInt(rewards[token], 10),
+              });
+            }
+          });
+          if (this.nodes[index].rewards.length === 0) {
+            this.nodes[index].rewards.push({
+              name: 'PRV',
+              decimals: api.tokenNameToDecimals('PRV'),
+              amount: 0,
+            });
+          }
+          this.save();
+        });
       });
     });
     return {

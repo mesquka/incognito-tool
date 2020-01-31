@@ -57,6 +57,7 @@ export default {
             ) {
               this.addresses[index].rewards.push({
                 name: api.tokenIDToName(token),
+                decimals: api.tokenNameToDecimals(api.tokenIDToName(token)),
                 amount: parseInt(rewards[publicKey.PublicKeyInBase58Check][token], 10),
               });
             }
@@ -64,6 +65,7 @@ export default {
           if (this.addresses[index].rewards.length === 0) {
             this.addresses[index].rewards.push({
               name: 'PRV',
+              decimals: api.tokenNameToDecimals('PRV'),
               amount: 0,
             });
           }

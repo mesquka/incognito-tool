@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 
 const ENDPOINT = 'https://mainnet.incognito.org/fullnode';
 
-const TOKEN_MAP = {
+const TOKEN_ID_NAME_MAP = {
   '0000000000000000000000000000000000000000000000000000000000000004': 'PRV',
   ffd8d42dc40a8d166ea4848baf8b5f6e912ad79875f4373070b59392b1756c8f: 'pETH',
   b832e5d3b1f01a4f0623f7fe91d6673461e1f5d37d91fe78c5c2e6183ff39696: 'pBTC',
@@ -13,9 +13,25 @@ const TOKEN_MAP = {
   '716fd1009e2a1669caacc36891e707bfdf02590f96ebd897548e8963c95ebac0': 'pUSDT',
 };
 
+const TOKEN_NAME_DECIMALS_MAP = {
+  PRV: 9,
+  pETH: 6,
+  pBTC: 6,
+  pBNB: 6,
+  pUSD: 6,
+  pTomo: 6,
+  pUSDT: 6,
+};
+
 function tokenIDToName(id) {
-  if (TOKEN_MAP[id]) return TOKEN_MAP[id];
+  if (TOKEN_ID_NAME_MAP[id]) return TOKEN_ID_NAME_MAP[id];
+  if (id.length !== 64) return id;
   return false;
+}
+
+function tokenNameToDecimals(name) {
+  if (TOKEN_NAME_DECIMALS_MAP[name]) return TOKEN_NAME_DECIMALS_MAP[name];
+  return 0;
 }
 
 function getPublicKeyFromPaymentAddress(address) {
@@ -102,6 +118,7 @@ function getMiningInfo(node) {
 
 export default {
   tokenIDToName,
+  tokenNameToDecimals,
   getPublicKeyFromPaymentAddress,
   listRewardAmount,
   getPublicKeyMining,
