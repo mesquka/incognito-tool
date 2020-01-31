@@ -9,7 +9,8 @@ const INCOGNITO_API = 'https://api.incognito.org';
 axios.get(`${INCOGNITO_API}/ptoken/list`).then((res) => {
   const tokenNameIDMap = {
     PRV: {
-      Name: 'PRV',
+      Name: 'Incognito',
+      PSymbol: 'PRV',
       PDecimals: 9,
     },
   };

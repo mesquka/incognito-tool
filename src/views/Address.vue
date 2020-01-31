@@ -28,7 +28,7 @@
         <div class="card-content">
           <table class="table is-bordered is-fullwidth">
             <tr v-for="(reward, index) in address.rewards" v-bind:key="index">
-              <th>{{reward.Name}}</th>
+              <th>{{reward.Name}} ({{reward.PSymbol}})</th>
               <td>{{reward.amount/(10**reward.PDecimals)}}</td>
             </tr>
           </table>
@@ -98,5 +98,9 @@ export default {
 
 .card-header {
   overflow: scroll;
+}
+
+.table {
+  table-layout: fixed;
 }
 </style>
