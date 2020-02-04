@@ -6,11 +6,21 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    refreshInterval: 5000,
+    refreshInterval: 300000,
     nodes: [],
     tokenNameIDMap: {},
   },
   mutations: {
+    updateNode(state, update) {
+      state.nodes.forEach((node, index) => {
+        if (
+          node.ip === update.ip
+          && node.port === update.port
+        ) {
+          Vue.set(state, `state.nodes[${index}]`, Object.assign({}, node, update));
+        }
+      });
+    },
     setRefreshInterval(state, refreshInterval) {
       state.refreshInterval = refreshInterval;
     },

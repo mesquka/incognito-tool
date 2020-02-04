@@ -1,30 +1,30 @@
 import axios from 'axios';
 import uuid from 'uuid/v4';
-import store from '@/store';
 
 const INCOGNITO_NODE = 'https://mainnet.incognito.org/fullnode';
 const INCOGNITO_API = 'https://api.incognito.org';
-// const IMAGES_ROOT = 'https://storage.googleapis.com/incognito/wallet/tokens/icons';
 
-axios.get(`${INCOGNITO_API}/ptoken/list`).then((res) => {
-  const tokenNameIDMap = {
-    PRV: {
-      Name: 'Incognito',
-      PSymbol: 'PRV',
-      PDecimals: 9,
-    },
-  };
-  res.data.Result.forEach((token) => {
-    if (token.Verified) tokenNameIDMap[token.TokenID] = token;
-    if (token.Verified) tokenNameIDMap[token.PSymbol] = token;
+function tokenList() {
+  return new Promise((resolve, reject) => {
+    axios.get(`${INCOGNITO_API}/ptoken/list`).then((result) => {
+      if (result.data.Error === null) {
+        const tokenNameIDMap = {
+          PRV: {
+            Name: 'Incognito',
+            PSymbol: 'PRV',
+            PDecimals: 9,
+          },
+        };
+        result.data.Result.forEach((token) => {
+          if (token.Verified) tokenNameIDMap[token.TokenID] = token;
+          if (token.Verified) tokenNameIDMap[token.PSymbol] = token;
+        });
+        resolve(tokenNameIDMap);
+      } else {
+        reject();
+      }
+    }).catch(reject);
   });
-  store.commit('setTokenNameIDMap', tokenNameIDMap);
-});
-
-function tokenIDToToken(id) {
-  if (store.state.tokenNameIDMap[id]) return store.state.tokenNameIDMap[id];
-  if (id.length !== 64) return id;
-  return false;
 }
 
 function getPublicKeyFromPaymentAddress(address) {
@@ -110,7 +110,7 @@ function getMiningInfo(node) {
 }
 
 export default {
-  tokenIDToToken,
+  tokenList,
   getPublicKeyFromPaymentAddress,
   listRewardAmount,
   getPublicKeyMining,

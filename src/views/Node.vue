@@ -70,42 +70,11 @@
 </template>
 
 <script>
-import api from '@/api';
-import store from '@/store';
-
 export default {
   name: 'node',
-  data() {
-    store.state.nodes.forEach((node, index) => {
-      api.getMiningInfo(`http://${node.ip}:${node.port}`).then((result) => {
-        this.nodes[index].status = result;
-        this.save();
-      });
-    });
-    store.state.nodes.forEach((node, index) => {
-      api.getPublicKeyMining(`http://${node.ip}:${node.port}`).then((miningKey) => {
-        [this.nodes[index].miningKey] = miningKey;
-        api.getMinerRewardFromMiningKey(miningKey[0]).then((rewards) => {
-          this.nodes[index].rewards = [];
-          Object.keys(rewards).forEach((id) => {
-            if (api.tokenIDToToken(id)) {
-              // Object.assign to remove reactivity
-              const token = Object.assign({}, api.tokenIDToToken(id));
-              token.amount = rewards[id];
-              this.nodes[index].rewards.push(token);
-            }
-          });
-          this.save();
-        });
-      });
-    });
-    return {
-      nodes: store.state.nodes,
-    };
-  },
-  methods: {
-    save() {
-      store.commit('setNodes', this.nodes);
+  computed: {
+    nodes() {
+      return this.$store.state.nodes;
     },
   },
 };

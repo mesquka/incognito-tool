@@ -106,14 +106,13 @@
 </template>
 
 <script>
-import store from '@/store';
 
 export default {
   name: 'settings',
   data() {
     return {
-      refreshInterval: store.state.refreshInterval / 1000,
-      nodes: store.state.nodes,
+      refreshInterval: this.$store.state.refreshInterval / 60 / 1000,
+      nodes: this.$store.state.nodes,
     };
   },
   methods: {
@@ -134,9 +133,10 @@ export default {
       if (
         this.refreshInterval > 0
       ) {
-        store.commit('setRefreshInterval', this.refreshInterval * 1000);
+        this.$store.commit('setRefreshInterval', this.refreshInterval * 60 * 1000);
+        this.$root.dataUpdater.refreshInterval();
       }
-      store.commit('setNodes', this.nodes);
+      this.$store.commit('setNodes', this.nodes);
     },
     resetData() {
       window.localStorage.removeItem('vuex');
