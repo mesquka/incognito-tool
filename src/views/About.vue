@@ -48,6 +48,8 @@
         <a href="https://mesquka.com/tips" class="card-footer-item">Tip Me</a>
       </footer>
     </div>
+
+    <div class="spacer"></div>
   </div>
 </template>
 

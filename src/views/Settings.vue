@@ -17,38 +17,6 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          Addresses
-        </p>
-        <p class="card-header-icon" v-on:click="addAddress">
-          <span class="icon">
-            <i class="mdi mdi-plus"></i>
-          </span>
-        </p>
-      </header>
-      <div class="card-content">
-        <div class="field is-grouped" v-for="(address, index) in addresses" v-bind:key="index">
-          <p class="control is-expanded">
-            <input
-              class="input"
-              type="text"
-              placeholder="Address"
-              v-model="address.address"
-              v-on:input="save">
-          </p>
-          <p class="control">
-            <button class="button is-danger" v-on:click="deleteAddress(index)">
-              <i class="mdi mdi-delete"></i>
-            </button>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="spacer"></div>
-
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
           Nodes
         </p>
         <p class="card-header-icon" v-on:click="addNode">
@@ -58,27 +26,60 @@
         </p>
       </header>
       <div class="card-content">
-        <div class="field is-grouped" v-for="(node, index) in nodes" v-bind:key="index">
+        <div class="card" v-for="(node, index) in nodes" v-bind:key="index">
+          <div class="card-content">
+            <div class="field">
+              <p class="control">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="IP"
+                  v-model="node.ip"
+                  v-on:input="save">
+              </p>
+            </div>
+            <div class="field is-grouped">
+              <p class="control is-expanded">
+                <input
+                  class="input"
+                  type="number"
+                  placeholder="Port"
+                  v-model="node.port"
+                  v-on:input="save">
+              </p>
+              <p class="control">
+                <button class="button is-danger" v-on:click="deleteNode(index)">
+                  <i class="mdi mdi-delete"></i>
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="card">
+      <header class="card-header">
+        <p class="card-header-title">
+          Auto Refresh
+        </p>
+      </header>
+      <div class="card-content">
+        <div class="field has-addons">
           <p class="control is-expanded">
             <input
               class="input"
-              type="text"
-              placeholder="IP"
-              v-model="node.ip"
-              v-on:input="save">
-          </p>
-          <p class="control">
-            <input
-              class="input"
               type="number"
-              placeholder="Port"
-              v-model="node.port"
-              v-on:input="save">
+              v-model.number="refreshInterval"
+              v-on:input="save"
+            >
           </p>
           <p class="control">
-            <button class="button is-danger" v-on:click="deleteNode(index)">
-              <i class="mdi mdi-delete"></i>
-            </button>
+            <a class="button is-static">
+              minutes
+            </a>
           </p>
         </div>
       </div>
@@ -111,15 +112,11 @@ export default {
   name: 'settings',
   data() {
     return {
-      addresses: store.state.addresses,
+      refreshInterval: store.state.refreshInterval / 1000,
       nodes: store.state.nodes,
     };
   },
   methods: {
-    deleteAddress(index) {
-      this.addresses.splice(index, 1);
-      this.save();
-    },
     deleteNode(index) {
       this.nodes.splice(index, 1);
       this.save();
@@ -133,14 +130,12 @@ export default {
         rewards: {},
       });
     },
-    addAddress() {
-      this.addresses.push({
-        address: '',
-        rewards: [],
-      });
-    },
     save() {
-      store.commit('setAddresses', this.addresses);
+      if (
+        this.refreshInterval > 0
+      ) {
+        store.commit('setRefreshInterval', this.refreshInterval * 1000);
+      }
       store.commit('setNodes', this.nodes);
     },
     resetData() {

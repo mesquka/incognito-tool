@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Address from '@/views/Address.vue';
+import Dashboard from '@/views/Dashboard.vue';
 import Node from '@/views/Node.vue';
 import Settings from '@/views/Settings.vue';
 import About from '@/views/About.vue';
@@ -10,8 +10,8 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name: 'address',
-    component: Address,
+    name: 'dashboard',
+    component: Dashboard,
   },
   {
     path: '/node',

@@ -6,13 +6,13 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    addresses: [],
+    refreshInterval: 5000,
     nodes: [],
     tokenNameIDMap: {},
   },
   mutations: {
-    setAddresses(state, addresses) {
-      state.addresses = addresses;
+    setRefreshInterval(state, refreshInterval) {
+      state.refreshInterval = refreshInterval;
     },
     setNodes(state, nodes) {
       state.nodes = nodes;
@@ -25,5 +25,17 @@ const store = new Vuex.Store({
     storage: window.localStorage,
   }).plugin],
 });
+
+if (
+  !store.state.refreshInterval
+  || typeof store.state.refreshInterval !== 'number'
+  || !store.state.nodes
+  || typeof store.state.nodes !== 'object'
+  || !store.state.tokenNameIDMap
+  || typeof store.state.tokenNameIDMap !== 'object'
+) {
+  window.localStorage.removeItem('vuex');
+  window.location.reload();
+}
 
 export default store;

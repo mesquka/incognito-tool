@@ -1,13 +1,15 @@
 <template>
   <nav class="navbar is-fixed-top">
     <div class="navbar-brand">
-      <router-link class="navbar-item" to="/">
+      <span class="navbar-item">
         <img src="@/assets/incognito.svg">
         <span class="nav-spacer"></span>
-        <strong>Mining Dashboard</strong>
+        <router-link to="/"><strong>Mining Dashboard (unofficial)</strong></router-link>
         <span class="nav-spacer"></span>
-        (unofficial)
-      </router-link>
+        by
+        <span class="nav-spacer"></span>
+        <a href="https://mesquka.com/">@mesquka</a>
+      </span>
       <div
         class="navbar-burger burger"
         v-on:click="showNav = !showNav"
@@ -23,7 +25,7 @@
       <div class="navbar-start"></div>
       <div class="navbar-end">
         <router-link to="/" class="navbar-item" v-on:click.native="showNav = false">
-          Address
+          Dashboard
         </router-link>
         <router-link to="/node" class="navbar-item" v-on:click.native="showNav = false">
           Node

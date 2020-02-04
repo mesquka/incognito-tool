@@ -49,7 +49,7 @@
             </tr>
             <tr>
               <th>Mining Key</th>
-              <td>{{`${node.miningKey.slice(0, 64)}...`}}</td>
+              <td>{{node.miningKey}}</td>
             </tr>
           </table>
           <strong>Rewards:</strong>
@@ -113,10 +113,14 @@ export default {
 
 <style scoped>
 .card-header {
-  overflow: scroll;
+  overflow: auto;
 }
 
 .table {
   table-layout: fixed;
+}
+
+td {
+  overflow: auto;
 }
 </style>
