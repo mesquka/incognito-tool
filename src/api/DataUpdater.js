@@ -9,6 +9,7 @@ class DataUpdater {
       store.commit('setTokenNameIDMap', tokenNameIDMap);
     });
 
+    DataUpdater.refresh();
     this.refreshInterval();
   }
 
@@ -30,7 +31,7 @@ class DataUpdater {
 
   static refresh() {
     store.state.nodes.forEach((node) => {
-      const update = node;
+      const update = Object.assign({}, node);
 
       api.getMiningInfo(`http://${node.ip}:${node.port}`).then((status) => {
         update.status = status;
@@ -45,7 +46,7 @@ class DataUpdater {
           update.rewards = [];
           Object.keys(rewards).forEach((id) => {
             if (DataUpdater.tokenIDToToken(id)) {
-              const token = DataUpdater.tokenIDToToken(id);
+              const token = Object.assign({}, DataUpdater.tokenIDToToken(id));
               token.amount = rewards[id];
               update.rewards.push(token);
             }

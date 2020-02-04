@@ -17,7 +17,7 @@ const store = new Vuex.Store({
           node.ip === update.ip
           && node.port === update.port
         ) {
-          Vue.set(state, `state.nodes[${index}]`, Object.assign({}, node, update));
+          Vue.set(state.nodes, index, Object.assign({}, node, update));
         }
       });
     },

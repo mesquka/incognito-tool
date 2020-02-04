@@ -14,7 +14,7 @@
 
     <div class="spacer"></div>
 
-    <div v-for="(node, index) in nodes" v-bind:key="index">
+    <div v-for="(node, nodeIndex) in nodes" v-bind:key="nodeIndex">
       <div class="card">
         <header class="card-header">
           <p class="card-header-title">
@@ -55,8 +55,8 @@
           <strong>Rewards:</strong>
           <table class="table is-bordered is-fullwidth">
             <tr
-              v-for="(reward, index) in node.rewards"
-              v-bind:key="index"
+              v-for="(reward, rewardIndex) in node.rewards"
+              v-bind:key="rewardIndex"
             >
               <th>{{reward.Name}} ({{reward.PSymbol}})</th>
               <td>{{reward.amount/(10**reward.PDecimals)}}</td>
