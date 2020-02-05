@@ -63,7 +63,7 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          Auto Refresh
+          Refresh Interval
         </p>
       </header>
       <div class="card-content">

@@ -59,7 +59,12 @@
               v-bind:key="rewardIndex"
             >
               <th>{{reward.Name}} ({{reward.PSymbol}})</th>
-              <td>{{reward.amount/(10**reward.PDecimals)}}</td>
+              <td>
+                {{prettyNum(
+                  reward.amount/(10**reward.PDecimals),
+                  {thousandsSeparator: ' '}
+                )}}
+              </td>
             </tr>
           </table>
         </div>
@@ -70,12 +75,22 @@
 </template>
 
 <script>
+import prettyNum, { PRECISION_SETTING } from 'pretty-num';
+
 export default {
   name: 'node',
+  data() {
+    return {
+      PRECISION_SETTING,
+    };
+  },
   computed: {
     nodes() {
       return this.$store.state.nodes;
     },
+  },
+  methods: {
+    prettyNum,
   },
 };
 </script>
