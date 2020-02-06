@@ -78,4 +78,8 @@ export default {
 .table {
   table-layout: fixed;
 }
+
+td {
+  overflow: auto;
+}
 </style>
