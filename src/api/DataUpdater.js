@@ -9,7 +9,6 @@ class DataUpdater {
       store.commit('setTokenNameIDMap', tokenNameIDMap);
     });
 
-    DataUpdater.refresh();
     this.refreshInterval();
   }
 
@@ -55,6 +54,9 @@ class DataUpdater {
         });
       });
     });
+
+    api.getBlockchainInfo().then(blockchainInfo => store.commit('setBlockchain', blockchainInfo));
+    api.getMempoolInfo().then(mempoolInfo => store.commit('setMempool', mempoolInfo));
   }
 }
 

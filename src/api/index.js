@@ -109,6 +109,54 @@ function getMiningInfo(node) {
   });
 }
 
+function getBlockchainInfo() {
+  return new Promise((resolve, reject) => {
+    axios.post(INCOGNITO_NODE, {
+      jsonrpc: '2.0',
+      method: 'getblockchaininfo',
+      id: 1,
+    }).then((result) => {
+      if (result.data.Error === null) {
+        const blockchainInfo = result.data.Result;
+
+        blockchainInfo.TotalTxs = blockchainInfo.BestBlocks['-1'].TotalTxs;
+        blockchainInfo.Shards = [];
+        blockchainInfo.Beacon = blockchainInfo.BestBlocks['-1'];
+        delete blockchainInfo.BestBlocks['-1'];
+
+        Object.keys(blockchainInfo.BestBlocks).forEach((shardNum) => {
+          const shard = blockchainInfo.BestBlocks[shardNum];
+          shard.id = shardNum;
+          blockchainInfo.TotalTxs += blockchainInfo.BestBlocks[shardNum].TotalTxs;
+          blockchainInfo.Shards.push(shard);
+        });
+
+        delete blockchainInfo.BestBlocks;
+
+        resolve(blockchainInfo);
+      } else {
+        reject();
+      }
+    }).catch(reject);
+  });
+}
+
+function getMempoolInfo() {
+  return new Promise((resolve, reject) => {
+    axios.post(INCOGNITO_NODE, {
+      jsonrpc: '2.0',
+      method: 'getmempoolinfo',
+      id: 1,
+    }).then((result) => {
+      if (result.data.Error === null) {
+        resolve(result.data.Result);
+      } else {
+        reject();
+      }
+    }).catch(reject);
+  });
+}
+
 export default {
   tokenList,
   getPublicKeyFromPaymentAddress,
@@ -116,4 +164,6 @@ export default {
   getPublicKeyMining,
   getMinerRewardFromMiningKey,
   getMiningInfo,
+  getBlockchainInfo,
+  getMempoolInfo,
 };

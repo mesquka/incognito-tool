@@ -9,6 +9,8 @@ const store = new Vuex.Store({
     refreshInterval: 300000,
     nodes: [],
     tokenNameIDMap: {},
+    blockchain: {},
+    mempool: {},
   },
   mutations: {
     updateNode(state, update) {
@@ -23,6 +25,12 @@ const store = new Vuex.Store({
     },
     setRefreshInterval(state, refreshInterval) {
       state.refreshInterval = refreshInterval;
+    },
+    setBlockchain(state, blockchain) {
+      state.blockchain = blockchain;
+    },
+    setMempool(state, mempool) {
+      state.mempool = mempool;
     },
     setNodes(state, nodes) {
       state.nodes = nodes;
@@ -43,6 +51,10 @@ if (
   || typeof store.state.nodes !== 'object'
   || !store.state.tokenNameIDMap
   || typeof store.state.tokenNameIDMap !== 'object'
+  || !store.state.blockchain
+  || typeof store.state.blockchain !== 'object'
+  || !store.state.mempool
+  || typeof store.state.mempool !== 'object'
 ) {
   window.localStorage.removeItem('vuex');
   window.location.reload();
