@@ -27,8 +27,11 @@
         <router-link to="/" class="navbar-item" v-on:click.native="showNav = false">
           Dashboard
         </router-link>
-        <router-link to="/node" class="navbar-item" v-on:click.native="showNav = false">
-          Node
+        <router-link to="/nodes" class="navbar-item" v-on:click.native="showNav = false">
+          Nodes
+        </router-link>
+        <router-link to="/tokens" class="navbar-item" v-on:click.native="showNav = false">
+          Tokens
         </router-link>
         <router-link to="/settings" class="navbar-item" v-on:click.native="showNav = false">
           Settings

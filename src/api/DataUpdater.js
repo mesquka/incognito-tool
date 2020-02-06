@@ -5,8 +5,32 @@ class DataUpdater {
   constructor() {
     this.cycle = 0;
 
-    api.tokenList().then((tokenNameIDMap) => {
+    api.tokenList().then((result) => {
+      const tokenNameIDMap = {
+        PRV: {
+          Name: 'Incognito',
+          PSymbol: 'PRV',
+          PDecimals: 9,
+        },
+      };
+
+      const verifiedTokens = [];
+      const unverifiedTokens = [];
+
+      result.forEach((token) => {
+        if (token.Verified) {
+          tokenNameIDMap[token.TokenID] = token;
+          tokenNameIDMap[token.PSymbol] = token;
+          verifiedTokens.push(token);
+        } else {
+          unverifiedTokens.push(token);
+          console.log(unverifiedTokens);
+        }
+      });
+
       store.commit('setTokenNameIDMap', tokenNameIDMap);
+      store.commit('setVerifiedTokens', verifiedTokens);
+      store.commit('setUnverifiedTokens', unverifiedTokens);
     });
 
     this.refreshInterval();

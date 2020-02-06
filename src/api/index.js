@@ -8,18 +8,7 @@ function tokenList() {
   return new Promise((resolve, reject) => {
     axios.get(`${INCOGNITO_API}/ptoken/list`).then((result) => {
       if (result.data.Error === null) {
-        const tokenNameIDMap = {
-          PRV: {
-            Name: 'Incognito',
-            PSymbol: 'PRV',
-            PDecimals: 9,
-          },
-        };
-        result.data.Result.forEach((token) => {
-          if (token.Verified) tokenNameIDMap[token.TokenID] = token;
-          if (token.Verified) tokenNameIDMap[token.PSymbol] = token;
-        });
-        resolve(tokenNameIDMap);
+        resolve(result.data.Result);
       } else {
         reject();
       }

@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Dashboard from '@/views/Dashboard.vue';
-import Node from '@/views/Node.vue';
+import Nodes from '@/views/Nodes.vue';
+import Tokens from '@/views/Tokens.vue';
 import Settings from '@/views/Settings.vue';
 import About from '@/views/About.vue';
 
@@ -14,9 +15,14 @@ const routes = [
     component: Dashboard,
   },
   {
-    path: '/node',
-    name: 'node',
-    component: Node,
+    path: '/nodes',
+    name: 'nodes',
+    component: Nodes,
+  },
+  {
+    path: '/tokens',
+    name: 'tokens',
+    component: Tokens,
   },
   {
     path: '/settings',

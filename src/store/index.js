@@ -8,6 +8,8 @@ const store = new Vuex.Store({
   state: {
     refreshInterval: 300000,
     nodes: [],
+    verifiedTokens: [],
+    unverifiedTokens: [],
     tokenNameIDMap: {},
     blockchain: {},
     mempool: {},
@@ -35,6 +37,12 @@ const store = new Vuex.Store({
     setNodes(state, nodes) {
       state.nodes = nodes;
     },
+    setVerifiedTokens(state, verifiedTokens) {
+      state.verifiedTokens = verifiedTokens;
+    },
+    setUnverifiedTokens(state, unverifiedTokens) {
+      state.unverifiedTokens = unverifiedTokens;
+    },
     setTokenNameIDMap(state, tokenNameIDMap) {
       state.tokenNameIDMap = tokenNameIDMap;
     },
@@ -49,7 +57,11 @@ if (
   || typeof store.state.refreshInterval !== 'number'
   || !store.state.nodes
   || typeof store.state.nodes !== 'object'
-  || !store.state.tokenNameIDMap
+  || !store.state.tokens
+  || typeof store.state.verifiedTokens !== 'object'
+  || !store.state.verifiedTokens
+  || typeof store.state.unverifiedTokens !== 'object'
+  || !store.state.unverifiedTokens
   || typeof store.state.tokenNameIDMap !== 'object'
   || !store.state.blockchain
   || typeof store.state.blockchain !== 'object'
