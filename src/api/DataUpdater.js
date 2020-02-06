@@ -24,7 +24,6 @@ class DataUpdater {
           verifiedTokens.push(token);
         } else {
           unverifiedTokens.push(token);
-          console.log(unverifiedTokens);
         }
       });
 

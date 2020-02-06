@@ -11,10 +11,11 @@ npm run build
 cd dist
 
 git init
+echo 'incognito.mesquka.com' > CNAME
 git add -A
 git commit -m 'deploy'
 
 # Push to pages
-git push -f git@github.com:mesquka/incognito_mining_dashboard.git master:gh-pages
+git push -f git@github.com:mesquka/incognito-tool.git master:gh-pages
 
 cd -

@@ -4,7 +4,7 @@
       <span class="navbar-item">
         <img src="@/assets/incognito.svg">
         <span class="nav-spacer"></span>
-        <router-link to="/"><strong>Mining Dashboard (unofficial)</strong></router-link>
+        <router-link to="/"><strong>Incognito Tool (unofficial)</strong></router-link>
         <span class="nav-spacer"></span>
         by
         <span class="nav-spacer"></span>
