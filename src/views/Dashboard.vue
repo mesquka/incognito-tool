@@ -13,16 +13,68 @@
     </div>
 
     <div class="spacer"></div>
+
+    <div class="tile is-ancestor">
+      <div class="tile is-parent">
+        <article class="tile is-child notification">
+          <div class="content">
+            <p class="title">{{blockchain.ActiveShards}}</p>
+            <p class="subtitle">Shards</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="tile is-parent">
+        <article class="tile is-child notification">
+          <div class="content">
+            <p class="title">{{blockchain.TotalTxs}}</p>
+            <p class="subtitle">Transactions Processed</p>
+            <div class="content">
+              <!-- Content -->
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="tile is-parent">
+        <article class="tile is-child notification">
+          <div class="content">
+            <p class="title">{{mempool.Size}}</p>
+            <p class="subtitle">Pending Transactions</p>
+            <div class="content">
+              <!-- Content -->
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="tile is-parent">
+        <article class="tile is-child notification">
+          <div class="content">
+            <p class="title">{{blockchain.Beacon.Epoch}}</p>
+            <p class="subtitle">Epoch</p>
+            <div class="content">
+              <!-- Content -->
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'dashboard',
-  data() {
-    return {};
-  },
-  methods: {
+  computed: {
+    blockchain() {
+      return this.$store.state.blockchain;
+    },
+    mempool() {
+      return this.$store.state.mempool;
+    },
   },
 };
 </script>
