@@ -26,34 +26,28 @@
         </p>
       </header>
       <div class="card-content">
-        <div class="card" v-for="(node, index) in nodes" v-bind:key="index">
-          <div class="card-content">
-            <div class="field">
-              <p class="control">
-                <input
-                  class="input"
-                  type="text"
-                  placeholder="IP"
-                  v-model="node.ip"
-                  v-on:input="save">
-              </p>
-            </div>
-            <div class="field is-grouped">
-              <p class="control is-expanded">
-                <input
-                  class="input"
-                  type="number"
-                  placeholder="Port"
-                  v-model="node.port"
-                  v-on:input="save">
-              </p>
-              <p class="control">
-                <button class="button is-danger" v-on:click="deleteNode(index)">
-                  <i class="mdi mdi-delete"></i>
-                </button>
-              </p>
-            </div>
-          </div>
+        <div class="field is-grouped" v-for="(node, index) in nodes" v-bind:key="index">
+          <p class="control is-expanded">
+            <input
+              class="input"
+              type="text"
+              placeholder="IP"
+              v-model="node.ip"
+              v-on:input="save">
+          </p>
+          <p class="control">
+            <input
+              class="input"
+              type="number"
+              placeholder="Port"
+              v-model="node.port"
+              v-on:input="save">
+          </p>
+          <p class="control">
+            <button class="button is-danger" v-on:click="deleteNode(index)">
+              <i class="mdi mdi-delete"></i>
+            </button>
+          </p>
         </div>
       </div>
     </div>
