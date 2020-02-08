@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 
 const INCOGNITO_NODE = 'https://mainnet.incognito.org/fullnode';
 const INCOGNITO_API = 'https://api.incognito.org';
-const PROXY_PREFIX = 'https://thingproxy.freeboard.io/fetch/';
+const PROXY_PREFIX = 'https://cors-anywhere.herokuapp.com/';
 
 function tokenList() {
   return new Promise((resolve, reject) => {
@@ -53,7 +53,6 @@ function listRewardAmount() {
 function getPublicKeyMining(node, direct) {
   return new Promise((resolve, reject) => {
     const endpoint = direct ? `${node}` : `${PROXY_PREFIX}${node}`;
-    console.log(endpoint);
     axios.post(endpoint, {
       jsonrpc: '2.0',
       method: 'getpublickeymining',
