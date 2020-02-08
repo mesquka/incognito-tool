@@ -11,8 +11,8 @@
         If you want to start staking yourself you can get started <a href="https://incognito.org/">here</a>.
       </div>
       <footer class="card-footer">
-        <a href="https://incognito.org/node.html" class="card-footer-item">Start Staking (Easy)</a>
-        <a href="https://incognito.org/validator.html" class="card-footer-item">Start Staking (Advanced)</a>
+        <a href="https://incognito.org/t/unboxing-and-setting-up-your-physical-node-device/29" class="card-footer-item">Start Staking (Easy)</a>
+        <a href="https://incognito.org/t/how-to-host-a-virtual-node/28" class="card-footer-item">Start Staking (Advanced)</a>
       </footer>
     </div>
 

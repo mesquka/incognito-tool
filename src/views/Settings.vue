@@ -3,20 +3,6 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          Tip
-        </p>
-      </header>
-      <div class="card-content">
-        If you're having issues you may need to allow unsafe scripts in your browser,
-        in chrome this is usually found at the right of the address bar.
-      </div>
-    </div>
-
-    <div class="spacer"></div>
-
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
           Nodes
         </p>
         <p class="card-header-icon" v-on:click="addNode">
@@ -26,14 +12,19 @@
         </p>
       </header>
       <div class="card-content">
-        <div class="field is-grouped" v-for="(node, index) in nodes" v-bind:key="index">
+        <div
+          class="field is-grouped is-grouped-multiline"
+          v-for="(node, index) in nodes"
+          v-bind:key="index"
+        >
           <p class="control is-expanded">
             <input
               class="input"
               type="text"
               placeholder="IP"
               v-model="node.ip"
-              v-on:input="save">
+              v-on:input="save"
+            >
           </p>
           <p class="control">
             <input
@@ -41,7 +32,8 @@
               type="number"
               placeholder="Port"
               v-model="node.port"
-              v-on:input="save">
+              v-on:input="save"
+            >
           </p>
           <p class="control">
             <button class="button is-danger" v-on:click="deleteNode(index)">
