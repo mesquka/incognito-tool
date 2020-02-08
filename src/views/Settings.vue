@@ -23,7 +23,7 @@
               type="text"
               placeholder="IP"
               v-model="node.ip"
-              v-on:input="save"
+              v-on:blur="save"
             >
           </p>
           <p class="control">
@@ -32,7 +32,7 @@
               type="number"
               placeholder="Port"
               v-model="node.port"
-              v-on:input="save"
+              v-on:blur="save"
             >
           </p>
           <p class="control">
