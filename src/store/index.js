@@ -16,6 +16,9 @@ const store = new Vuex.Store({
   },
   mutations: {
     updateNode(state, update) {
+      const updateCandidate = update;
+      delete updateCandidate.directConnect;
+
       state.nodes.forEach((node, index) => {
         if (
           node.ip === update.ip

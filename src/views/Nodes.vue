@@ -1,20 +1,5 @@
 <template>
   <div class="container-app">
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          Tip
-        </p>
-      </header>
-      <div class="card-content content">
-        <p>If you're having issues you may need to allow unsafe scripts in your browser,
-        in chrome this is usually found at the right of the address bar.</p>
-        <p>Node monitoring may not work in mobile browsers.</p>
-      </div>
-    </div>
-
-    <div class="spacer"></div>
-
     <div v-for="(node, nodeIndex) in nodes" v-bind:key="nodeIndex">
       <div class="card">
         <header class="card-header">

@@ -3,6 +3,7 @@ import uuid from 'uuid/v4';
 
 const INCOGNITO_NODE = 'https://mainnet.incognito.org/fullnode';
 const INCOGNITO_API = 'https://api.incognito.org';
+const PROXY_PREFIX = 'https://thingproxy.freeboard.io/fetch/';
 
 function tokenList() {
   return new Promise((resolve, reject) => {
@@ -49,9 +50,11 @@ function listRewardAmount() {
   });
 }
 
-function getPublicKeyMining(node) {
+function getPublicKeyMining(node, direct) {
   return new Promise((resolve, reject) => {
-    axios.post(node, {
+    const endpoint = direct ? `${node}` : `${PROXY_PREFIX}${node}`;
+    console.log(endpoint);
+    axios.post(endpoint, {
       jsonrpc: '2.0',
       method: 'getpublickeymining',
       id: uuid(),
@@ -82,9 +85,10 @@ function getMinerRewardFromMiningKey(key) {
   });
 }
 
-function getMiningInfo(node) {
+function getMiningInfo(node, direct) {
   return new Promise((resolve, reject) => {
-    axios.post(node, {
+    const endpoint = direct ? `${node}` : `${PROXY_PREFIX}${node}`;
+    axios.post(endpoint, {
       jsonrpc: '2.0',
       method: 'getmininginfo',
       id: 1,
