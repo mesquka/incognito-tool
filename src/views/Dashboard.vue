@@ -101,7 +101,9 @@
             </p>
           </header>
           <div class="card-content">
-            <span v-if="mempool.ListTxs.lenght === 0">No Pending Transactions</span>
+            <span v-if="!mempool.ListTxs || mempool.ListTxs.length === 0">
+              No Pending Transactions
+            </span>
             <table class="table is-bordered is-hoverable is-fullwidth">
               <tbody>
                 <tr v-for="(tx, index) in mempool.ListTxs" v-bind:key="index">
