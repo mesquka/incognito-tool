@@ -7,7 +7,7 @@
         </p>
       </header>
       <div class="card-content">
-        <table class="table is-hoverable is-fullwidth">
+        <table class="table is-bordered is-hoverable is-fullwidth">
           <tbody>
             <tr v-for="(token, tokenIndex) in verifiedTokens" v-bind:key="tokenIndex">
               <th>{{token.Name}} ({{token.PSymbol}})</th>
@@ -27,7 +27,7 @@
         </p>
       </header>
       <div class="card-content">
-        <table class="table is-hoverable is-fullwidth">
+        <table class="table is-bordered is-hoverable is-fullwidth">
           <tbody>
             <tr v-for="(token, tokenIndex) in unverifiedTokens" v-bind:key="tokenIndex">
               <th>{{token.Name}} ({{token.PSymbol}})</th>
