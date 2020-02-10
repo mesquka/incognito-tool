@@ -3,7 +3,7 @@ import uuid from 'uuid/v4';
 
 const INCOGNITO_NODE = 'https://mainnet.incognito.org/fullnode';
 const INCOGNITO_API = 'https://api.incognito.org';
-const PROXY_PREFIX = 'https://cors-anywhere.herokuapp.com/';
+const PROXY_PREFIX = 'https://cors-proxy-mesquka.herokuapp.com/';
 
 function tokenList() {
   return new Promise((resolve, reject) => {
