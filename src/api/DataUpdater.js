@@ -42,6 +42,9 @@ class DataUpdater {
             if (DataUpdater.tokenIDToToken(id)) {
               const token = Object.assign({}, DataUpdater.tokenIDToToken(id));
               token.amount = rewards[id];
+              if (DataUpdater.tokenIDToToken(id).PSymbol === 'PRV') {
+                update.PRV = token.amount;
+              }
               update.rewards.push(token);
             }
           });
