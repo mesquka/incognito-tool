@@ -73,7 +73,7 @@ function getMinerRewardFromMiningKey(key) {
       jsonrpc: '2.0',
       method: 'getminerrewardfromminingkey',
       params: [key],
-      id: 1,
+      id: uuid(),
     }).then((result) => {
       if (result.data.Error === null) {
         resolve(result.data.Result);
@@ -90,7 +90,7 @@ function getMiningInfo(node, direct) {
     axios.post(endpoint, {
       jsonrpc: '2.0',
       method: 'getmininginfo',
-      id: 1,
+      id: uuid(),
     }).then((result) => {
       if (result.data.Error === null) {
         resolve(result.data.Result);
@@ -106,7 +106,7 @@ function getBlockchainInfo() {
     axios.post(INCOGNITO_NODE, {
       jsonrpc: '2.0',
       method: 'getblockchaininfo',
-      id: 1,
+      id: uuid(),
     }).then((result) => {
       if (result.data.Error === null) {
         const blockchainInfo = result.data.Result;
@@ -138,7 +138,26 @@ function getMempoolInfo() {
     axios.post(INCOGNITO_NODE, {
       jsonrpc: '2.0',
       method: 'getmempoolinfo',
-      id: 1,
+      id: uuid(),
+    }).then((result) => {
+      if (result.data.Error === null) {
+        resolve(result.data.Result);
+      } else {
+        reject();
+      }
+    }).catch(reject);
+  });
+}
+
+function getPDEXInfo(height) {
+  return new Promise((resolve, reject) => {
+    axios.post(INCOGNITO_NODE, {
+      jsonrpc: '2.0',
+      method: 'getpdestate',
+      params: [{
+        BeaconHeight: height,
+      }],
+      id: uuid(),
     }).then((result) => {
       if (result.data.Error === null) {
         resolve(result.data.Result);
@@ -158,4 +177,5 @@ export default {
   getMiningInfo,
   getBlockchainInfo,
   getMempoolInfo,
+  getPDEXInfo,
 };

@@ -83,6 +83,8 @@ class DataUpdater {
 
     api.getBlockchainInfo().then(blockchainInfo => store.commit('setBlockchain', blockchainInfo));
     api.getMempoolInfo().then(mempoolInfo => store.commit('setMempool', mempoolInfo));
+
+    api.getPDEXInfo(store.state.blockchain.Beacon.Height).then(console.log);
   }
 }
 
