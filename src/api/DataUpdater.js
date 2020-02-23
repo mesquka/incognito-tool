@@ -60,6 +60,11 @@ class DataUpdater {
           PSymbol: 'PRV',
           PDecimals: 9,
         },
+        '0000000000000000000000000000000000000000000000000000000000000004': {
+          Name: 'Incognito',
+          PSymbol: 'PRV',
+          PDecimals: 9,
+        },
       };
 
       const verifiedTokens = [];
@@ -80,11 +85,35 @@ class DataUpdater {
       store.commit('setUnverifiedTokens', unverifiedTokens);
     });
 
+    api.getPDEXInfo(store.state.blockchain.Beacon.Height).then((result) => {
+      const prices = {};
+      Object.keys(result.PDEPoolPairs).forEach((pair) => {
+        if (
+          DataUpdater.tokenIDToToken(result.PDEPoolPairs[pair].Token1IDStr)
+          && DataUpdater.tokenIDToToken(result.PDEPoolPairs[pair].Token2IDStr)
+        ) {
+          const token1Value = result.PDEPoolPairs[pair].Token1PoolValue
+            / (10 ** DataUpdater.tokenIDToToken(
+              result.PDEPoolPairs[pair].Token1IDStr,
+            ).PDecimals);
+          const token2Value = result.PDEPoolPairs[pair].Token2PoolValue
+            / (10 ** DataUpdater.tokenIDToToken(
+              result.PDEPoolPairs[pair].Token2IDStr,
+            ).PDecimals);
+
+          const price = {
+            token1: DataUpdater.tokenIDToToken(result.PDEPoolPairs[pair].Token1IDStr).PSymbol,
+            token2: DataUpdater.tokenIDToToken(result.PDEPoolPairs[pair].Token2IDStr).PSymbol,
+            rate: token2Value / token1Value,
+          };
+          prices[`${price.token1}-${price.token2}`] = price;
+        }
+      });
+      store.commit('setPrices', prices);
+    });
 
     api.getBlockchainInfo().then(blockchainInfo => store.commit('setBlockchain', blockchainInfo));
     api.getMempoolInfo().then(mempoolInfo => store.commit('setMempool', mempoolInfo));
-
-    api.getPDEXInfo(store.state.blockchain.Beacon.Height).then(console.log);
   }
 }
 

@@ -36,6 +36,15 @@
           </div>
         </article>
       </div>
+
+      <div class="tile is-parent">
+        <article class="tile is-child notification">
+          <div class="content">
+            <p class="title">${{prices['PRV-pUSDT'].rate.toPrecision(2)}}</p>
+            <p class="subtitle">USD</p>
+          </div>
+        </article>
+      </div>
     </div>
 
     <div class="spacer"></div>
@@ -129,6 +138,9 @@ export default {
     },
     mempool() {
       return this.$store.state.mempool;
+    },
+    prices() {
+      return this.$store.state.prices;
     },
   },
 };

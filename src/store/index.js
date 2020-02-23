@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     blockchain: {},
     mempool: {},
     collapsed: false,
+    prices: {},
   },
   mutations: {
     updateNode(state, update) {
@@ -49,6 +50,9 @@ const store = new Vuex.Store({
     },
     setTokenNameIDMap(state, tokenNameIDMap) {
       state.tokenNameIDMap = tokenNameIDMap;
+    },
+    setPrices(state, prices) {
+      state.prices = prices;
     },
     toggleCollapsed(state) {
       state.collapsed = !state.collapsed;
