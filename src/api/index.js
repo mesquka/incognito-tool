@@ -99,10 +99,10 @@ class API {
 
   static async getChainStats() {
     const blockchainInfo = await apiInterface.getBlockchainInfo();
-    const mempoolInto = await apiInterface.getMempoolInfo();
+    const mempoolInfo = await apiInterface.getMempoolInfo();
     return {
       blockchainInfo,
-      mempoolInto,
+      mempoolInfo,
     };
   }
 
@@ -110,13 +110,18 @@ class API {
     const chainStats = await API.getChainStats();
     store.commit('setChainStats', chainStats);
 
+    const tokensInfo = await API.getTokensInfo();
+    store.commit('setTokensInfo', tokensInfo);
+
     const prices = await API.getPDEXAtBlockHeight(
       store.state.chainStats.blockchainInfo.Beacon.Height,
     );
     store.commit('setPrices', prices);
 
-    const tokensInfo = await API.getTokensInfo();
-    store.commit('setTokensInfo', tokensInfo);
+    store.state.nodes.forEach(async (node) => {
+      const nodeStatus = API.getNodesStatus(node);
+      store.commit('updateNode', nodeStatus);
+    });
   }
 }
 

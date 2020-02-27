@@ -94,33 +94,6 @@
     <div class="card">
       <header class="card-header">
         <p class="card-header-title">
-          Refresh Interval
-        </p>
-      </header>
-      <div class="card-content">
-        <div class="field has-addons">
-          <p class="control is-expanded">
-            <input
-              class="input"
-              type="number"
-              v-model.number="refreshInterval"
-              v-on:blur="save"
-            >
-          </p>
-          <p class="control">
-            <a class="button is-static">
-              minutes
-            </a>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="spacer"></div>
-
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
           Reset Settings
         </p>
       </header>
@@ -142,7 +115,6 @@ export default {
   name: 'settings',
   data() {
     return {
-      refreshInterval: this.$store.state.refreshInterval / 60 / 1000,
       nodes: this.$store.state.nodes,
     };
   },
@@ -163,13 +135,6 @@ export default {
     },
     save() {
       this.$store.commit('setNodes', this.nodes);
-
-      if (
-        this.refreshInterval > 0
-      ) {
-        this.$store.commit('setRefreshInterval', this.refreshInterval * 60 * 1000);
-        this.$root.dataUpdater.refreshInterval();
-      }
     },
     resetData() {
       window.localStorage.removeItem('vuex');

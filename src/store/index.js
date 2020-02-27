@@ -27,8 +27,8 @@ const store = new Vuex.Store({
         }
       });
     },
-    changePreference(state, preference) {
-      state[preference.name] = preference.value;
+    setPreference(state, preference) {
+      state.preferences[preference.name] = preference.value;
     },
     setNodes(state, nodes) {
       state.nodes = nodes;

@@ -119,13 +119,16 @@ export default {
       return this.$store.state.nodes;
     },
     collapsed() {
-      return this.$store.state.collapsed;
+      return this.$store.state.preferences.collapsed;
     },
   },
   methods: {
     prettyNum,
     toggleCollapsed() {
-      this.$store.commit('toggleCollapsed');
+      this.$store.commit('setPreference', {
+        name: 'collapsed',
+        value: !this.$store.state.preferences.collapsed,
+      });
     },
   },
 };

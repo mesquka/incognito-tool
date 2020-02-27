@@ -47,10 +47,10 @@ export default {
   name: 'tokenlist',
   computed: {
     verifiedTokens() {
-      return this.$store.state.verifiedTokens;
+      return this.$store.state.tokensInfo.verifiedTokens;
     },
     unverifiedTokens() {
-      return this.$store.state.unverifiedTokens;
+      return this.$store.state.tokensInfo.unverifiedTokens;
     },
   },
 };

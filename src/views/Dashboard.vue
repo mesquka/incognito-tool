@@ -37,14 +37,14 @@
         </article>
       </div>
 
-      <div class="tile is-parent">
+      <!--<div class="tile is-parent">
         <article class="tile is-child notification">
           <div class="content">
             <p class="title">${{prices['PRV-pUSDT'].rate.toPrecision(2)}}</p>
             <p class="subtitle">USD</p>
           </div>
         </article>
-      </div>
+      </div>-->
     </div>
 
     <div class="spacer"></div>
@@ -134,14 +134,14 @@ export default {
   name: 'dashboard',
   computed: {
     blockchain() {
-      return this.$store.state.blockchain;
+      return this.$store.state.chainStats.blockchainInfo;
     },
     mempool() {
-      return this.$store.state.mempool;
+      return this.$store.state.chainStats.mempoolInfo;
     },
-    prices() {
+    /* prices() {
       return this.$store.state.prices;
-    },
+    }, */
   },
 };
 </script>
