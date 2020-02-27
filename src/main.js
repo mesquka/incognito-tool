@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
-import DataUpdater from '@/api/DataUpdater';
+import API from '@/api';
 
 Vue.config.productionTip = false;
 
@@ -11,7 +11,7 @@ new Vue({
   store,
   data() {
     return {
-      dataUpdater: new DataUpdater(),
+      api: new API(),
     };
   },
   render: h => h(App),

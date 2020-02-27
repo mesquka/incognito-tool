@@ -1,181 +1,123 @@
-import axios from 'axios';
-import uuid from 'uuid/v4';
+import apiInterface from '@/api/apiInterface';
+import store from '@/store';
 
-const INCOGNITO_NODE = 'https://mainnet.incognito.org/fullnode';
-const INCOGNITO_API = 'https://api.incognito.org';
-const PROXY_PREFIX = 'https://cors-proxy-mesquka.herokuapp.com/';
+class API {
+  constructor() {
+    API.refreshAll();
+  }
 
-function tokenList() {
-  return new Promise((resolve, reject) => {
-    axios.get(`${INCOGNITO_API}/ptoken/list`).then((result) => {
-      if (result.data.Error === null) {
-        resolve(result.data.Result);
-      } else {
-        reject();
+  static tokenIDToToken(id) {
+    if (store.state.tokensInfo.tokenNameIDMap[id]) return store.state.tokensInfo.tokenNameIDMap[id];
+    if (id.length !== 64) return id;
+    return false;
+  }
+
+  static async getNodesStatus(node) {
+    const update = Object.assign({}, node);
+
+    update.status = await apiInterface.getMiningInfo(`http://${node.ip}:${node.port}`, node.directConnect);
+    [update.miningKey] = await apiInterface.getPublicKeyMining(`http://${node.ip}:${node.port}`, node.directConnect);
+
+    const rewards = await apiInterface.getMinerRewardFromMiningKey(update.miningKey);
+    update.rewards = [];
+    Object.keys(rewards).forEach((id) => {
+      if (API.tokenIDToToken(id)) {
+        const token = Object.assign({}, API.tokenIDToToken(id));
+        token.amount = rewards[id];
+        if (API.tokenIDToToken(id).PSymbol === 'PRV') {
+          update.PRV = token.amount;
+        }
+        update.rewards.push(token);
       }
-    }).catch(reject);
-  });
+    });
+
+    return update;
+  }
+
+  static async getTokensInfo() {
+    const tokenList = await apiInterface.tokenList();
+    const tokenNameIDMap = {
+      PRV: {
+        Name: 'Incognito',
+        PSymbol: 'PRV',
+        PDecimals: 9,
+      },
+      '0000000000000000000000000000000000000000000000000000000000000004': {
+        Name: 'Incognito',
+        PSymbol: 'PRV',
+        PDecimals: 9,
+      },
+    };
+
+    const verifiedTokens = [];
+    const unverifiedTokens = [];
+
+    tokenList.forEach((token) => {
+      if (token.Verified) {
+        tokenNameIDMap[token.TokenID] = token;
+        tokenNameIDMap[token.PSymbol] = token;
+        verifiedTokens.push(token);
+      } else {
+        unverifiedTokens.push(token);
+      }
+    });
+
+    return {
+      tokenNameIDMap,
+      verifiedTokens,
+      unverifiedTokens,
+    };
+  }
+
+  static async getPDEXAtBlockHeight(blockHeight) {
+    const pDEXInfo = await apiInterface.getPDEXInfo(blockHeight);
+    const prices = {};
+    Object.keys(pDEXInfo.PDEPoolPairs).forEach((pair) => {
+      if (
+        API.tokenIDToToken(pDEXInfo.PDEPoolPairs[pair].Token1IDStr)
+        && API.tokenIDToToken(pDEXInfo.PDEPoolPairs[pair].Token2IDStr)
+      ) {
+        const token1Value = pDEXInfo.PDEPoolPairs[pair].Token1PoolValue
+          / (10 ** API.tokenIDToToken(
+            pDEXInfo.PDEPoolPairs[pair].Token1IDStr,
+          ).PDecimals);
+        const token2Value = pDEXInfo.PDEPoolPairs[pair].Token2PoolValue
+          / (10 ** API.tokenIDToToken(
+            pDEXInfo.PDEPoolPairs[pair].Token2IDStr,
+          ).PDecimals);
+
+        const price = {
+          token1: API.tokenIDToToken(pDEXInfo.PDEPoolPairs[pair].Token1IDStr).PSymbol,
+          token2: API.tokenIDToToken(pDEXInfo.PDEPoolPairs[pair].Token2IDStr).PSymbol,
+          rate: token2Value / token1Value,
+        };
+        prices[`${price.token1}-${price.token2}`] = price;
+      }
+    });
+    return prices;
+  }
+
+  static async getChainStats() {
+    const blockchainInfo = await apiInterface.getBlockchainInfo();
+    const mempoolInto = await apiInterface.getMempoolInfo();
+    return {
+      blockchainInfo,
+      mempoolInto,
+    };
+  }
+
+  static async refreshAll() {
+    const chainStats = await API.getChainStats();
+    store.commit('setChainStats', chainStats);
+
+    const prices = await API.getPDEXAtBlockHeight(
+      store.state.chainStats.blockchainInfo.Beacon.Height,
+    );
+    store.commit('setPrices', prices);
+
+    const tokensInfo = await API.getTokensInfo();
+    store.commit('setTokensInfo', tokensInfo);
+  }
 }
 
-function getPublicKeyFromPaymentAddress(address) {
-  return new Promise((resolve, reject) => {
-    axios.post(INCOGNITO_NODE, {
-      jsonrpc: '2.0',
-      method: 'getpublickeyfrompaymentaddress',
-      params: [address],
-      id: uuid(),
-    }).then((result) => {
-      if (result.data.Error === null) {
-        resolve(result.data.Result);
-      } else {
-        reject();
-      }
-    }).catch(reject);
-  });
-}
-
-function listRewardAmount() {
-  return new Promise((resolve, reject) => {
-    axios.post(INCOGNITO_NODE, {
-      jsonrpc: '2.0',
-      method: 'listrewardamount',
-      id: uuid(),
-    }).then((result) => {
-      if (result.data.Error === null) {
-        resolve(result.data.Result);
-      } else {
-        reject();
-      }
-    }).catch(reject);
-  });
-}
-
-function getPublicKeyMining(node, direct) {
-  return new Promise((resolve, reject) => {
-    const endpoint = direct ? `${node}` : `${PROXY_PREFIX}${node}`;
-    axios.post(endpoint, {
-      jsonrpc: '2.0',
-      method: 'getpublickeymining',
-      id: uuid(),
-    }).then((result) => {
-      if (result.data.Error === null && result.data.Result !== null) {
-        resolve(result.data.Result);
-      } else {
-        reject();
-      }
-    }).catch(reject);
-  });
-}
-
-function getMinerRewardFromMiningKey(key) {
-  return new Promise((resolve, reject) => {
-    axios.post(INCOGNITO_NODE, {
-      jsonrpc: '2.0',
-      method: 'getminerrewardfromminingkey',
-      params: [key],
-      id: uuid(),
-    }).then((result) => {
-      if (result.data.Error === null) {
-        resolve(result.data.Result);
-      } else {
-        reject();
-      }
-    }).catch(reject);
-  });
-}
-
-function getMiningInfo(node, direct) {
-  return new Promise((resolve, reject) => {
-    const endpoint = direct ? `${node}` : `${PROXY_PREFIX}${node}`;
-    axios.post(endpoint, {
-      jsonrpc: '2.0',
-      method: 'getmininginfo',
-      id: uuid(),
-    }).then((result) => {
-      if (result.data.Error === null) {
-        resolve(result.data.Result);
-      } else {
-        reject();
-      }
-    }).catch(reject);
-  });
-}
-
-function getBlockchainInfo() {
-  return new Promise((resolve, reject) => {
-    axios.post(INCOGNITO_NODE, {
-      jsonrpc: '2.0',
-      method: 'getblockchaininfo',
-      id: uuid(),
-    }).then((result) => {
-      if (result.data.Error === null) {
-        const blockchainInfo = result.data.Result;
-
-        blockchainInfo.TotalTxs = blockchainInfo.BestBlocks['-1'].TotalTxs;
-        blockchainInfo.Shards = [];
-        blockchainInfo.Beacon = blockchainInfo.BestBlocks['-1'];
-        delete blockchainInfo.BestBlocks['-1'];
-
-        Object.keys(blockchainInfo.BestBlocks).forEach((shardNum) => {
-          const shard = blockchainInfo.BestBlocks[shardNum];
-          shard.id = shardNum;
-          blockchainInfo.TotalTxs += blockchainInfo.BestBlocks[shardNum].TotalTxs;
-          blockchainInfo.Shards.push(shard);
-        });
-
-        delete blockchainInfo.BestBlocks;
-
-        resolve(blockchainInfo);
-      } else {
-        reject();
-      }
-    }).catch(reject);
-  });
-}
-
-function getMempoolInfo() {
-  return new Promise((resolve, reject) => {
-    axios.post(INCOGNITO_NODE, {
-      jsonrpc: '2.0',
-      method: 'getmempoolinfo',
-      id: uuid(),
-    }).then((result) => {
-      if (result.data.Error === null) {
-        resolve(result.data.Result);
-      } else {
-        reject();
-      }
-    }).catch(reject);
-  });
-}
-
-function getPDEXInfo(height) {
-  return new Promise((resolve, reject) => {
-    axios.post(INCOGNITO_NODE, {
-      jsonrpc: '2.0',
-      method: 'getpdestate',
-      params: [{
-        BeaconHeight: height,
-      }],
-      id: uuid(),
-    }).then((result) => {
-      if (result.data.Error === null) {
-        resolve(result.data.Result);
-      } else {
-        reject();
-      }
-    }).catch(reject);
-  });
-}
-
-export default {
-  tokenList,
-  getPublicKeyFromPaymentAddress,
-  listRewardAmount,
-  getPublicKeyMining,
-  getMinerRewardFromMiningKey,
-  getMiningInfo,
-  getBlockchainInfo,
-  getMempoolInfo,
-  getPDEXInfo,
-};
+export default API;

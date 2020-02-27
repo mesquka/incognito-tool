@@ -6,15 +6,12 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    refreshInterval: 300000,
+    storeVersion: process.env.VUE_APP_VERSION,
+    preferences: {},
     nodes: [],
-    verifiedTokens: [],
-    unverifiedTokens: [],
-    tokenNameIDMap: {},
-    blockchain: {},
-    mempool: {},
-    collapsed: false,
-    prices: {},
+    chainStats: {},
+    tokensInfo: {},
+    markets: [],
   },
   mutations: {
     updateNode(state, update) {
@@ -30,37 +27,30 @@ const store = new Vuex.Store({
         }
       });
     },
-    setRefreshInterval(state, refreshInterval) {
-      state.refreshInterval = refreshInterval;
-    },
-    setBlockchain(state, blockchain) {
-      state.blockchain = blockchain;
-    },
-    setMempool(state, mempool) {
-      state.mempool = mempool;
+    changePreference(state, preference) {
+      state[preference.name] = preference.value;
     },
     setNodes(state, nodes) {
       state.nodes = nodes;
     },
-    setVerifiedTokens(state, verifiedTokens) {
-      state.verifiedTokens = verifiedTokens;
+    setMarket(state, market) {
+      state.markets = market;
     },
-    setUnverifiedTokens(state, unverifiedTokens) {
-      state.unverifiedTokens = unverifiedTokens;
+    setChainStats(state, chainStats) {
+      state.chainStats = chainStats;
     },
-    setTokenNameIDMap(state, tokenNameIDMap) {
-      state.tokenNameIDMap = tokenNameIDMap;
-    },
-    setPrices(state, prices) {
-      state.prices = prices;
-    },
-    toggleCollapsed(state) {
-      state.collapsed = !state.collapsed;
+    setTokensInfo(state, tokensInfo) {
+      state.tokensInfo = tokensInfo;
     },
   },
   plugins: [new VuexPersistence({
     storage: window.localStorage,
   }).plugin],
 });
+
+if (store.state.storeVersion !== process.env.VUE_APP_VERSION) {
+  window.localStorage.removeItem('vuex');
+  window.location.reload();
+}
 
 export default store;
