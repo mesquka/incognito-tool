@@ -110,6 +110,7 @@
 </template>
 
 <script>
+import API from '@/api';
 
 export default {
   name: 'settings',
@@ -135,6 +136,7 @@ export default {
     },
     save() {
       this.$store.commit('setNodes', this.nodes);
+      API.refreshNodes();
     },
     resetData() {
       window.localStorage.removeItem('vuex');

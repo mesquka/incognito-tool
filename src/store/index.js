@@ -7,11 +7,14 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
   state: {
     storeVersion: process.env.VUE_APP_VERSION,
-    preferences: {},
+    preferences: {
+      collapsed: false,
+    },
     nodes: [],
     chainStats: {},
     tokensInfo: {},
-    markets: [],
+    markets: {},
+    beaconBlockTimeIndex: {},
   },
   mutations: {
     updateNode(state, update) {
@@ -33,8 +36,15 @@ const store = new Vuex.Store({
     setNodes(state, nodes) {
       state.nodes = nodes;
     },
-    setMarket(state, market) {
-      state.markets = market;
+    setBeaconBlockTimeIndex(state, beaconBlock) {
+      state.beaconBlockTimeIndex[beaconBlock.height] = beaconBlock.time;
+    },
+    deleteBeaconBlockTimeIndex(state, beaconBlockHeight) {
+      delete state.beaconBlockTimeIndex[beaconBlockHeight];
+    },
+    setMarketPriceAtTime(state, market) {
+      if (!state.markets[market.name]) Vue.set(state.markets, market.name, {});
+      Vue.set(state.markets[market.name], market.time, market.rate);
     },
     setChainStats(state, chainStats) {
       state.chainStats = chainStats;
@@ -46,6 +56,13 @@ const store = new Vuex.Store({
   plugins: [new VuexPersistence({
     storage: window.localStorage,
   }).plugin],
+  actions: {
+    prunePrices(context) {
+      Object.keys(context.state.markets).forEach((market) => {
+        console.log(market);
+      });
+    },
+  },
 });
 
 if (store.state.storeVersion !== process.env.VUE_APP_VERSION) {

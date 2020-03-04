@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Dashboard from '@/views/Dashboard.vue';
 import Nodes from '@/views/Nodes.vue';
+import Price from '@/views/Price.vue';
 import Tokens from '@/views/Tokens.vue';
 import Settings from '@/views/Settings.vue';
 import About from '@/views/About.vue';
@@ -18,6 +19,11 @@ const routes = [
     path: '/nodes',
     name: 'nodes',
     component: Nodes,
+  },
+  {
+    path: '/price',
+    name: 'price',
+    component: Price,
   },
   {
     path: '/tokens',
