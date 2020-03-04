@@ -37,14 +37,14 @@
         </article>
       </div>
 
-      <!--<div class="tile is-parent">
+      <div class="tile is-parent">
         <article class="tile is-child notification">
           <div class="content">
-            <p class="title">${{prices['PRV-pUSDT'].rate.toPrecision(2)}}</p>
+            <p class="title">${{price.toPrecision(2)}}</p>
             <p class="subtitle">USD</p>
           </div>
         </article>
-      </div>-->
+      </div>
     </div>
 
     <div class="spacer"></div>
@@ -139,9 +139,13 @@ export default {
     mempool() {
       return this.$store.state.chainStats.mempoolInfo;
     },
-    /* prices() {
-      return this.$store.state.prices;
-    }, */
+    price() {
+      return this.$store.state.markets['PRV-pUSDT'][
+        this.$store.state.beaconBlockTimeIndex[
+          Math.floor(this.blockchain.Beacon.Height / 2000) * 2000
+        ]
+      ];
+    },
   },
 };
 </script>

@@ -9,8 +9,9 @@
       <div class="card-content">
         <line-chart
           :data="markets[market]"
+          :library="{plotOptions:{series:{animation: false}}}"
         ></line-chart>
-        <sub>Charting Library by <a href="https://highcharts.com">Highcharts</a> (CC BY-NC 3.0)</sub>
+        <sub><a href="https://highcharts.com">Highcharts</a> (CC BY-NC 3.0)</sub>
       </div>
     </div>
   </div>

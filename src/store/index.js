@@ -39,9 +39,6 @@ const store = new Vuex.Store({
     setBeaconBlockTimeIndex(state, beaconBlock) {
       state.beaconBlockTimeIndex[beaconBlock.height] = beaconBlock.time;
     },
-    deleteBeaconBlockTimeIndex(state, beaconBlockHeight) {
-      delete state.beaconBlockTimeIndex[beaconBlockHeight];
-    },
     setMarketPriceAtTime(state, market) {
       if (!state.markets[market.name]) Vue.set(state.markets, market.name, {});
       Vue.set(state.markets[market.name], market.time, market.rate);
@@ -56,13 +53,6 @@ const store = new Vuex.Store({
   plugins: [new VuexPersistence({
     storage: window.localStorage,
   }).plugin],
-  actions: {
-    prunePrices(context) {
-      Object.keys(context.state.markets).forEach((market) => {
-        console.log(market);
-      });
-    },
-  },
 });
 
 if (store.state.storeVersion !== process.env.VUE_APP_VERSION) {

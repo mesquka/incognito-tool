@@ -133,38 +133,24 @@ class API {
 
   static async refreshMarketData() {
     let marketBlocks = [
-      store.state.chainStats.blockchainInfo.Beacon.Height,
+      Math.floor(store.state.chainStats.blockchainInfo.Beacon.Height / 2000),
     ];
 
-    for (let i = 0; i <= 40; i += 1) {
-      marketBlocks.push(store.state.chainStats.blockchainInfo.Beacon.Height - i);
-      marketBlocks.push(
-        Math.floor(store.state.chainStats.blockchainInfo.Beacon.Height / 100) * 100 - i * 100,
-      );
+    for (
+      let i = 1;
+      i <= Math.floor(store.state.chainStats.blockchainInfo.Beacon.Height / 2000);
+      i += 1
+    ) {
+      marketBlocks.push(i * 2000);
     }
 
-    for (let i = 0; i <= 500; i += 1) {
-      if (
-        Math.floor(store.state.chainStats.blockchainInfo.Beacon.Height / 1000) * 1000 - i * 1000 > 0
-      ) {
-        marketBlocks.push(
-          Math.floor(store.state.chainStats.blockchainInfo.Beacon.Height / 1000) * 1000 - i * 1000,
-        );
-      }
-    }
+    marketBlocks = marketBlocks.reverse();
 
-    marketBlocks = marketBlocks.filter((v, i) => marketBlocks.indexOf(v) === i);
-
-    Object.keys(store.state.beaconBlockTimeIndex).forEach((block) => {
-      if (!marketBlocks.indexOf(block)) store.commit('deleteBeaconBlockTimeIndex', block);
-    });
-
-    store.dispatch('prunePrices');
-
-    /* Prevents locking up browser with excessive network calls */
-    for (let i = 0; i < marketBlocks.length; i += 16) {
+    /* Prevents locking up browser with excessive concurrentnetwork calls */
+    /* TODO: Implement server-side for loading with single network call */
+    for (let i = 0; i < marketBlocks.length; i += 4) {
       const waitFor = [];
-      marketBlocks.slice(i, i + 16).forEach(async (block) => {
+      marketBlocks.slice(i, i + 4).forEach((block) => {
         if (!store.state.beaconBlockTimeIndex[block]) {
           waitFor.push(API.refreshMarketDataForHeight(block));
         }
