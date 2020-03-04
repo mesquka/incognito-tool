@@ -37,7 +37,7 @@
         </article>
       </div>
 
-      <div class="tile is-parent">
+      <div class="tile is-parent" v-if="price">
         <article class="tile is-child notification">
           <div class="content">
             <p class="title">${{price.toPrecision(2)}}</p>
