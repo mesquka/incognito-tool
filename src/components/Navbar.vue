@@ -4,7 +4,9 @@
       <span class="navbar-item">
         <img src="@/assets/incognito.svg">
         <span class="nav-spacer"></span>
-        <router-link to="/"><strong>Incognito Tool (unofficial)</strong></router-link>
+        <router-link to="/"><strong>
+          Incognito Tool (v{{version}})
+        </strong></router-link>
         <span class="nav-spacer"></span>
         by
         <span class="nav-spacer"></span>
@@ -53,6 +55,7 @@ export default {
   data() {
     return {
       showNav: false,
+      version: process.env.VUE_APP_VERSION,
     };
   },
 };
