@@ -4,7 +4,7 @@
       <header class="dropdown is-hoverable card-header">
         <div class="dropdown-trigger">
           <p class="card-header-title">
-            {{market}}
+            {{market}}<span class="mdi mdi-menu-down"></span>
           </p>
         </div>
         <div class="dropdown-menu">

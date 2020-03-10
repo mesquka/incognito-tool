@@ -41,7 +41,7 @@
         <article class="tile is-child notification">
           <div class="content">
             <p class="title">${{price.toPrecision(2)}}</p>
-            <p class="subtitle">USD</p>
+            <p class="subtitle">PRV-USDT</p>
           </div>
         </article>
       </div>
