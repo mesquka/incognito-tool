@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersistence from 'vuex-persist';
+import semver from 'semver';
 
 Vue.use(Vuex);
 
@@ -55,7 +56,10 @@ const store = new Vuex.Store({
   }).plugin],
 });
 
-if (store.state.storeVersion !== process.env.VUE_APP_VERSION) {
+if (
+  semver.major(store.state.storeVersion) !== semver.major(process.env.VUE_APP_VERSION)
+  || semver.minor(store.state.storeVersion) !== semver.minor(process.env.VUE_APP_VERSION)
+) {
   window.localStorage.removeItem('vuex');
   window.location.reload();
 }
