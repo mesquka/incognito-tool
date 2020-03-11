@@ -3,6 +3,10 @@
   "author": "Kieran Mesquita <mesquka@pm.me> (https://mesquka.com/)",
   "version": "0.1.1",
   "license" : "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mesquka/incognito-price-api.git"
+  },
   "homepage": "https://incognito.mesquka.com",
   "bugs": "https://github.com/mesquka/incognito-tool/issues",
   "scripts": {
