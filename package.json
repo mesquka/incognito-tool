@@ -1,7 +1,10 @@
 {
   "name": "incognito-tool",
+  "author": "Kieran Mesquita <mesquka@pm.me> (https://mesquka.com/)",
   "version": "0.1.1",
-  "private": true,
+  "license" : "MIT",
+  "homepage": "https://incognito.mesquka.com",
+  "bugs": "https://github.com/mesquka/incognito-tool/issues",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
