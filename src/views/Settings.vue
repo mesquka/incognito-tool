@@ -12,7 +12,7 @@
         </p>
       </header>
       <div class="card-content">
-        <div class="card node-card" v-for="(node, index) in nodes" v-bind:key="index">
+        <div class="card-2 node-card" v-for="(node, index) in nodes" v-bind:key="index">
           <header class="card-header">
             <p class="card-header-title">
               {{node.ip}}:{{node.port}}

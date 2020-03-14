@@ -1,144 +1,29 @@
 <template>
   <div class="container-app">
-    <div class="tile is-ancestor">
-      <div class="tile is-parent">
-        <article class="tile is-child notification">
-          <div class="content">
-            <p class="title">{{blockchain.ActiveShards}}</p>
-            <p class="subtitle">Shards</p>
-          </div>
-        </article>
-      </div>
+    <h1>Network</h1>
+    <network></network>
 
-      <div class="tile is-parent">
-        <article class="tile is-child notification">
-          <div class="content">
-            <p class="title">{{blockchain.TotalTxs}}</p>
-            <p class="subtitle">Transactions Processed</p>
-          </div>
-        </article>
-      </div>
+    <h1>Shards</h1>
+    <shards></shards>
 
-      <div class="tile is-parent">
-        <article class="tile is-child notification">
-          <div class="content">
-            <p class="title">{{mempool.Size}}</p>
-            <p class="subtitle">Pending Transactions</p>
-          </div>
-        </article>
-      </div>
-
-      <div class="tile is-parent">
-        <article class="tile is-child notification">
-          <div class="content">
-            <p class="title">{{blockchain.Beacon.Epoch}}</p>
-            <p class="subtitle">Epoch</p>
-          </div>
-        </article>
-      </div>
-
-      <div class="tile is-parent" v-if="price">
-        <article class="tile is-child notification">
-          <div class="content">
-            <p class="title">${{price.toPrecision(2)}}</p>
-            <p class="subtitle">PRV-USDT</p>
-          </div>
-        </article>
-      </div>
-    </div>
-
-    <div class="spacer"></div>
-
-    <div class="columns">
-      <div class="column">
-        <div>
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">
-                Beacon Chain
-              </p>
-            </header>
-            <div class="card-content">
-              <table class="table is-bordered is-hoverable is-fullwidth">
-                <tbody>
-                  <tr>
-                    <th>Latest Block</th>
-                    <td>{{blockchain.Beacon.Hash}}</td>
-                  </tr>
-                  <tr>
-                    <th>Height</th>
-                    <td>{{blockchain.Beacon.Height}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="spacer"></div>
-        </div>
-
-        <div v-for="(shard, index) in blockchain.Shards" v-bind:key="index">
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">
-                Shard #{{shard.id}}
-              </p>
-            </header>
-            <div class="card-content">
-              <table class="table is-bordered is-hoverable is-fullwidth">
-                <tbody>
-                  <tr>
-                    <th>Latest Block</th>
-                    <td>{{shard.Hash}}</td>
-                  </tr>
-                  <tr>
-                    <th>Height</th>
-                    <td>{{shard.Height}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="spacer"></div>
-        </div>
-      </div>
-
-      <div class="column">
-        <div class="card">
-          <header class="card-header">
-            <p class="card-header-title">
-              Pending Transactions
-            </p>
-          </header>
-          <div class="card-content">
-            <span v-if="!mempool.ListTxs || mempool.ListTxs.length === 0">
-              No Pending Transactions
-            </span>
-            <table class="table is-bordered is-hoverable is-fullwidth">
-              <tbody>
-                <tr v-for="(tx, index) in mempool.ListTxs" v-bind:key="index">
-                  <td>{{tx.TxID}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="spacer"></div>
+    <h1>Mempool</h1>
+    <mempool></mempool>
   </div>
 </template>
 
 <script>
+import Mempool from '@/components/dashboard/Mempool.vue';
+import Network from '@/components/dashboard/Network.vue';
+import Shards from '@/components/dashboard/Shards.vue';
+
 export default {
   name: 'dashboard',
+  components: {
+    Mempool,
+    Network,
+    Shards,
+  },
   computed: {
-    blockchain() {
-      return this.$store.state.chainStats.blockchainInfo;
-    },
-    mempool() {
-      return this.$store.state.chainStats.mempoolInfo;
-    },
     price() {
       return this.$store.state.markets['PRV-pUSDT'][
         this.$store.state.beaconBlockTimeIndex[
@@ -156,7 +41,7 @@ export default {
 }
 
 .table {
-  table-layout: fixed;
+  width: 100%;
 }
 
 td {

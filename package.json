@@ -2,7 +2,7 @@
   "name": "incognito-tool",
   "author": "Kieran Mesquita <mesquka@pm.me> (https://mesquka.com/)",
   "version": "0.1.1",
-  "license" : "MIT",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mesquka/incognito-price-api.git"
@@ -17,7 +17,6 @@
   "dependencies": {
     "@mdi/font": "^4.8.95",
     "axios": "^0.19.2",
-    "bulma": "^0.8.0",
     "core-js": "^3.4.4",
     "highcharts": "^8.0.2",
     "pretty-num": "^0.3.0",
