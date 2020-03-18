@@ -53,22 +53,18 @@ class API {
     };
 
     const verifiedTokens = [];
-    const unverifiedTokens = [];
 
     tokenList.forEach((token) => {
       if (token.Verified) {
         tokenNameIDMap[token.TokenID] = token;
         tokenNameIDMap[token.PSymbol] = token;
         verifiedTokens.push(token);
-      } else {
-        unverifiedTokens.push(token);
       }
     });
 
     return {
       tokenNameIDMap,
       verifiedTokens,
-      unverifiedTokens,
     };
   }
 

@@ -19,6 +19,11 @@
       <div class="stat">{{blockchain.Beacon.Epoch}}</div>
       <div class="label">Epoch</div>
     </div>
+
+    <div class="item" v-if="price">
+      <div class="stat">${{price.toPrecision(2)}}</div>
+      <div class="label">PRV-USDT</div>
+    </div>
   </div>
 </template>
 
@@ -32,6 +37,13 @@ export default {
     mempool() {
       return this.$store.state.chainStats.mempoolInfo;
     },
+    price() {
+      return this.$store.state.markets['PRV-pUSDT'][
+        this.$store.state.beaconBlockTimeIndex[
+          Math.floor(this.blockchain.Beacon.Height / 2000) * 2000
+        ]
+      ];
+    },
   },
 };
 </script>
@@ -40,14 +52,13 @@ export default {
 .stats {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
   width: calc(100vw - 64px);
 }
 
 .stats > .item {
+  flex-grow: 1;
   border-radius: 4px;
-  height: 52px;
-  min-width: 268px;
+  min-width: 128px;
   width: calc(33% - 44px);
   text-align: center;
   background: #282c37;

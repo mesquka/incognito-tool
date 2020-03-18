@@ -97,15 +97,23 @@ export default {
   flex-wrap: wrap;
   justify-content: space-evenly;
   max-height: 0;
-  opacity: 0;
   transform: scaleY(0);
-  transition: opacity 0.26s ease-in-out;
+  transform-origin: top;
+  opacity: 0;
+  transition:
+    opacity 0.3s ease-in-out,
+    max-height 0.3s ease-in-out,
+    transform 0.3s cubic-bezier(1,0,1,0);
 }
 
 .nav > .menu.active {
   max-height: 100vh;
-  opacity: 100;
   transform: scaleY(1);
+  opacity: 100;
+  transition:
+    opacity 0.3s ease-in-out,
+    max-height 0.3s ease-in-out,
+    transform 0.3s cubic-bezier(0,1,0,1);
 }
 
 .nav > .menu > .item {
@@ -113,7 +121,8 @@ export default {
   padding: 12px;
   border-radius: 4px;
   height: 32px;
-  width: 128px;
+  min-width: 128px;
+  width: calc(30% - 20px);
   text-align: center;
   line-height: 32px;
   color: #d9e1e8;

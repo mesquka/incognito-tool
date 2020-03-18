@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="item" v-for="shard in blockchain.Shards" v-bind:key="shard.id">
+    <div class="item" v-for="shard in blockchain.Shards" :key="shard.id">
       <header class="header">
         Shard {{shard.id}}
       </header>
@@ -58,9 +58,9 @@ export default {
 }
 
 .shards > .item {
+  flex-grow: 1;
   text-align: center;
   border-radius: 4px;
-  height: 128px;
   min-width: 292px;
   width: calc(33% - 20px);
   background: #282c37;
@@ -83,7 +83,7 @@ export default {
 
 .shards > .item > .stat {
   margin: 0 16px 0 16px;
-  overflow: auto;
+  overflow-wrap: break-word;
   width: calc(100% - 32px);
 }
 </style>

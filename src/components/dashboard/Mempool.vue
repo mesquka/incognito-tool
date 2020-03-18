@@ -1,13 +1,11 @@
 <template>
   <div class="transactions">
-    <div class="transaction" v-if="!mempool.ListTxs || mempool.ListTxs.length === 0">
-      <header class="header">
-        No Pending Transactions
-      </header>
+    <div class="no-transactions" v-if="!mempool.ListTxs || mempool.ListTxs.length === 0">
+      No Pending Transactions
     </div>
-    <div class="transaction" v-for="tx in mempool.ListTxs" v-bind:key="tx.TxID">
+    <div class="transaction" v-for="tx in mempool.ListTxs" :key="tx.TxID">
       <header class="header">
-        Transaction
+        TXID
       </header>
       <div class="txid">
         {{tx.TxID}}
@@ -28,6 +26,16 @@ export default {
 </script>
 
 <style scoped>
+.no-transactions {
+  width: calc(100vw - 84px);
+  line-height: 128px;
+  height: 128px;
+  text-align: center;
+  border-radius: 4px;
+  background: #282c37;
+  box-shadow: 0 0 15px rgba(0,0,0,.2);
+}
+
 .transactions {
   display: flex;
   flex-wrap: wrap;
@@ -36,10 +44,10 @@ export default {
 }
 
 .transactions > .transaction {
+  flex-grow: 1;
   border-radius: 4px;
   min-width: 292px;
-  width: calc(25% - 44px);
-  height: 128px;
+  width: calc(33% - 20px);
   text-align: center;
   background: #282c37;
   margin: 0 10px 16px 10px;

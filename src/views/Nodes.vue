@@ -13,13 +13,24 @@
       </div>
     </nav>
 
-    <div v-if="collapsed">
+    <div class="spacer"></div>
+
+    <div class="nodes-list">
+      <node
+        v-for="(node, index) in nodes"
+        :key="index"
+        :node="node"
+        :collapsed="collapsed"
+      ></node>
+    </div>
+
+    <!--<div v-if="collapsed">
       <div>
         <div class="card">
           <div class="card-content">
             <table class="table is-bordered is-hoverable is-fullwidth">
               <tbody>
-                <tr v-for="(node, nodeIndex) in nodes" v-bind:key="nodeIndex">
+                <tr v-for="(node, nodeIndex) in nodes" :key="nodeIndex">
                   <th>{{node.ip}}:{{node.port}}</th>
                   <td>{{node.status.Role}}</td>
                   <td>
@@ -39,7 +50,7 @@
     </div>
 
     <div v-if="!collapsed">
-      <div v-for="(node, nodeIndex) in nodes" v-bind:key="nodeIndex">
+      <div v-for="(node, nodeIndex) in nodes" :key="nodeIndex">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
@@ -84,7 +95,7 @@
               <tbody>
                 <tr
                   v-for="(reward, rewardIndex) in node.rewards"
-                  v-bind:key="rewardIndex"
+                  :key="rewardIndex"
                 >
                   <th>{{reward.Name}} ({{reward.PSymbol}})</th>
                   <td>
@@ -100,19 +111,17 @@
         </div>
         <div class="spacer"></div>
       </div>
-    </div>
+    </div>-->
   </div>
 </template>
 
 <script>
-import prettyNum, { PRECISION_SETTING } from 'pretty-num';
+import Node from '@/components/nodes/Node.vue';
 
 export default {
   name: 'nodes',
-  data() {
-    return {
-      PRECISION_SETTING,
-    };
+  components: {
+    Node,
   },
   computed: {
     nodes() {
@@ -123,7 +132,6 @@ export default {
     },
   },
   methods: {
-    prettyNum,
     toggleCollapsed() {
       this.$store.commit('setPreference', {
         name: 'collapsed',
@@ -135,23 +143,11 @@ export default {
 </script>
 
 <style scoped>
-.card-header {
-  overflow: auto;
-}
-
-.table {
-  table-layout: fixed;
-}
-
-td {
-  overflow: auto;
-}
-
-tr {
-  overflow: auto;
-}
-
-th {
-  overflow: auto;
+.nodes-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  justify-content: space-evenly;
+  width: calc(100vw - 64px);
 }
 </style>

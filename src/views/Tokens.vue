@@ -9,7 +9,7 @@
       <div class="card-content">
         <table class="table is-bordered is-hoverable is-fullwidth">
           <tbody>
-            <tr v-for="(token, tokenIndex) in verifiedTokens" v-bind:key="tokenIndex">
+            <tr v-for="(token, tokenIndex) in verifiedTokens" :key="tokenIndex">
               <th>{{token.Name}} ({{token.PSymbol}})</th>
               <td>{{token.TokenID}}</td>
             </tr>
@@ -17,28 +17,6 @@
         </table>
       </div>
     </div>
-
-    <div class="spacer"></div>
-
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          Tokens (Unverified)
-        </p>
-      </header>
-      <div class="card-content">
-        <table class="table is-bordered is-hoverable is-fullwidth">
-          <tbody>
-            <tr v-for="(token, tokenIndex) in unverifiedTokens" v-bind:key="tokenIndex">
-              <th>{{token.Name}} ({{token.PSymbol}})</th>
-              <td>{{token.TokenID}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="spacer"></div>
   </div>
 </template>
 
@@ -48,9 +26,6 @@ export default {
   computed: {
     verifiedTokens() {
       return this.$store.state.tokensInfo.verifiedTokens;
-    },
-    unverifiedTokens() {
-      return this.$store.state.tokensInfo.unverifiedTokens;
     },
   },
 };

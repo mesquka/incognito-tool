@@ -19,6 +19,10 @@ a {
   text-decoration: none;
 }
 
+hr {
+  border: 1px solid #393f4f;
+}
+
 h1 {
   text-align: center;
   padding: 8px;
