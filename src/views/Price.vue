@@ -33,8 +33,6 @@
               }
           },
         }"
-        :round="2"
-        :zeros="true"
       ></area-chart>
       <div class="controls">
         <div class="selection" v-on:click="showMenu = !showMenu">
