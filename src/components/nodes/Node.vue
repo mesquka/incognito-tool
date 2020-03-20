@@ -75,6 +75,7 @@ export default {
 
 <style scoped>
 .node {
+  flex-grow: 1;
   border-radius: 4px;
   min-width: 292px;
   width: calc(50% - 20px);

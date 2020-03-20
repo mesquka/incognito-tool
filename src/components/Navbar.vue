@@ -59,6 +59,7 @@ export default {
   background: #282c37;
   box-shadow: 0 0 15px rgba(0,0,0,.2);
   border-radius: 0 0 20px 20px;
+  z-index: 100;
 }
 
 .nav > .bar {

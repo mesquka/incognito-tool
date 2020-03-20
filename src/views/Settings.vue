@@ -1,111 +1,59 @@
 <template>
   <div class="container-app">
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          Nodes
-        </p>
-        <p class="card-header-icon" v-on:click="addNode">
-          <span class="icon">
-            <i class="mdi mdi-plus"></i>
-          </span>
-        </p>
-      </header>
-      <div class="card-content">
-        <div class="card-2 node-card" v-for="(node, index) in nodes" :key="index">
-          <header class="card-header">
-            <p class="card-header-title">
-              {{node.ip}}:{{node.port}}
-            </p>
-          </header>
-          <div class="card-content">
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">IP</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control is-expanded">
-                    <input
-                      class="input"
-                      type="text"
-                      placeholder="IP"
-                      v-model="node.ip"
-                      v-on:blur="save"
-                    >
-                  </p>
-                </div>
-              </div>
-            </div>
+    <h1>Nodes</h1>
 
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Port</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control is-expanded">
-                    <input
-                      class="input"
-                      type="number"
-                      placeholder="Port"
-                      v-model="node.port"
-                      v-on:blur="save"
-                    >
-                  </p>
-                </div>
-              </div>
-            </div>
+    <button class="add-button" v-on:click="addNode">
+      <i class="mdi mdi-plus"></i>
+    </button>
 
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Direct Connect</label>
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <label class="switch">
-                    <input type="checkbox" v-model="node.directConnect" v-on:change="save">
-                    <span class="slider"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-              </div>
-              <div class="field-body">
-                <div class="field">
-                  <p class="control is-expanded">
-                    <button class="button is-fullwidth is-danger" v-on:click="deleteNode(index)">
-                      <i class="mdi mdi-delete"></i>
-                    </button>
-                  </p>
-                </div>
-              </div>
-            </div>
+    <div class="nodes-list">
+      <div class="node" v-for="(node, index) in nodes" :key="index">
+        <header class="header">
+          {{node.ip}}:{{node.port}}
+        </header>
+        <div class="content">
+          <div class="field">
+            <input
+              class="input"
+              type="text"
+              placeholder="IP"
+              v-model="node.ip"
+              v-on:blur="save"
+            >
+            <div class="label">IP</div>
           </div>
+          <div class="field">
+            <input
+              class="input"
+              type="number"
+              placeholder="Port"
+              v-model="node.port"
+              v-on:blur="save"
+            >
+            <div class="label">Port</div>
+          </div>
+          <div class="field">
+            <label class="check">
+              <input type="checkbox" v-model="node.directConnect" v-on:change="save">
+              <span class="slider"></span>
+            </label>
+            <div class="label">Direct Connect</div>
+          </div>
+          <button class="delete-button" v-on:click="deleteNode(index)">
+            <i class="mdi mdi-delete"></i>
+          </button>
         </div>
       </div>
     </div>
 
     <div class="spacer"></div>
 
-    <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          Reset Settings
-        </p>
-      </header>
-      <div class="card-content">
-        <button class="button is-danger is-fullwidth" v-on:click="resetData">
-          Reset App Settings
-        </button>
-        <small>Use this if you're experiencing issues with the dashboard</small>
-      </div>
-    </div>
-
-    <div class="spacer"></div>
+    <h1>Reset Settings</h1>
+    <button class="delete-button" v-on:click="resetData">
+      Reset App Settings
+    </button>
+    <br><br>
+    <small>Use this if you're experiencing issues with the dashboard</small>
   </div>
 </template>
 
@@ -147,60 +95,70 @@ export default {
 </script>
 
 <style scoped>
-.node-card {
-  margin-bottom: 10px;
+.nodes-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+  justify-content: space-evenly;
+  width: calc(100vw - 64px);
+  margin-top: 16px;
 }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
+.node {
+  border-radius: 4px;
+  min-width: 292px;
+  width: calc(50% - 20px);
+  text-align: center;
+  background: #282c37;
+  margin: 0 10px 16px 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,.2);
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+.node > .header {
+  background: #313543;
+  border-radius: 4px 4px 0 0;
+  padding: 8px;
 }
 
-.slider {
-  position: absolute;
+.node > .content {
+  padding: 8px;
+}
+
+.node > .content > .field > .input {
+  width: calc(100% - 16px);
+  background: #191b22;
+  color: #d9e1e8;
+  border: 0;
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 2px;
+}
+
+.node > .content > .field > .label {
+  font-size: 12px;
+  margin: 0 16px 8px 16px;
+  color: #606984;
+}
+
+.add-button {
+  width: calc(100vw - 64px);
+  color: #FFFFFF;
+  background: #282c37;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 34px;
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(0,0,0,.2);
+  border: 0;
+  padding: 8px;
 }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: #00d1b2;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #00d1b2;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+.delete-button {
+  width: 100%;
+  color: #FFFFFF;
+  background: hsl(348, 100%, 61%);
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 0 0 15px rgba(0,0,0,.2);
+  border: 0;
+  padding: 8px;
 }
 </style>
