@@ -5,7 +5,7 @@ import Chart from 'highcharts';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
-import API from '@/api';
+import API from '@/api/api';
 
 Vue.config.productionTip = false;
 
